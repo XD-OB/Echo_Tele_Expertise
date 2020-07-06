@@ -27,6 +27,12 @@ Pour generer le pdf:
 Pour le cryptage:
 - pipenv install pycryptodome
 
+# DICOM Web Viewer:
+Le visionneur dicom utiliser:
+- https://github.com/ivmartel/dwv-jqui/releases/tag/v0.4.0
+- yarn install
+- yarn start
+
 ## Db Super User:
 - 'USER': 'postgres',
 - 'PASSWORD': 'ITGod2020@'
@@ -44,6 +50,6 @@ couleur secondaire: #27496D
 troisième couleur: #00909E
 couleur du fond: #e6e4e4
 
-## The myconveryions:
+## The myconvertions:
 contain a template filter used to transform int -> str,
 instead of convert in the views fonction, my choice was to let it in the template.

@@ -1,6 +1,6 @@
 # File to store The constantes used in the app, to make the changes easely done :)
 
-paginator_max = 3
+paginator_max = 9
 notifications_max = 5
 ete_email = 'echoteleexpertise@gmail.com'
 

@@ -20,7 +20,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'dwv.apps.DwvConfig',
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',
     'exams.apps.ExamsConfig',

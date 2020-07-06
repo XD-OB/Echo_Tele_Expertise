@@ -13,6 +13,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace="accounts")),
     path('patients/', include('patients.urls', namespace="patients")),
     path('pages/', include('pages.urls', namespace="pages")),
-    path('dwv/', include('dwv.urls', namespace="dwv")),
     path('verify_email/<str:hash_code>/', views.activate_account, name="activate_account"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
