@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+
+{% block title %} Demandes d'avis d'expertise: {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+    <!-- Side Nav -->
+    {% include 'pages/partials/_sideNav.html' %}
+
+    <!-- Request for Opinions -->
+    <div class="col-9" style="margin: 2em 0;">
+     
+    <!-- Search Area -->
+    <form action="{% url 'pages:list_requests' %}">
+      <div class="form-row">
+        <!-- Patient -->
+        <div class="col-md-6 mb-3">
+          <label class="sr-only">Patients</label>
+          <select name="search_patient" class="form-control">
+            <option selected="true" value="">Tous les patients</option>
+            {% for patient in unique_patients %}
+            <option value="{{ patient.pk }}"
+              {% if values.search_patient == patient.pk|to_str %}
+                selected
+              {% endif %}
+            >
+              {{ patient.last_name }} {{ patient.first_name }}
+            </option>
+            {% endfor %}
+        </select>
+        </div>
+        <!-- Expert -->
+        <div class="col-md-6 mb-3">
+          <label class="sr-only">Experts</label>
+          <select name="search_expert" class="form-control">
+            <option selected="true" value="">Tous les experts</option>
+            {% for expert in unique_experts %}
+            <option value="{{ expert.pk }}"
+              {% if values.search_expert == expert.pk|to_str %}
+                selected
+              {% endif %}
+            >
+              {{ expert.last_name }} {{ expert.first_name }}
+            </option>
+            {% endfor %}
+        </select>
+        </div>
+        <!-- Subject -->
+        <div class="col-md-4 mb-3">
+          <label class="sr-only">Objet</label>
+          <input type="text" name="search_subject" class="form-control" placeholder="Objet"
+            value="{{ values.search_subject }}">
+        </div>
+        <!-- Urgent -->
+        <div class="col-md-3 mb-3" style="text-align: center;">
+          <label class="toggle-switch-box switch-rounded switch-bg-danger">
+            <input type="checkbox" name="search_urgent" value='URGENT'
+              {% if values.search_urgent ==  'URGENT' %}
+                checked
+              {% endif %}
+            >
+            <span class="toggle-switch-item" data-tg-on="Urgent" data-tg-off="tous">
+              <span class="switch-button"></span>
+            </span>
+          </label>
+        </div>
+        <!-- Incomplete -->
+        <div class="col-md-3 mb-3" style="text-align: center;">
+          <label class="toggle-switch-box switch-rounded switch-bg-info">
+            <input type="checkbox" name="search_incomplete" value='INCOMPLETE'
+              {% if values.search_incomplete ==  'INCOMPLETE' %}
+                checked
+              {% endif %}
+            >
+            <span class="toggle-switch-item" data-tg-on="Incomplet" data-tg-off="Tous">
+              <span class="switch-button"></span>
+            </span>
+          </label>
+        </div>
+        <!-- Start search button -->
+        <div class="col-md-2 mb-3 search-btn">
+          <button class="btn btn-info" type="submit">
+            <i class="fa fa-right-margin fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+      
+      {% if requests %}
+      
+      <small class="small-info">
+        <i class="fa fa-info-circle"></i>
+        Appuyer sur l'objet un dossier pour voir les détails.
+      </small>
+      <!-- Files List -->
+      <table class="table table-striped" style="margin-top: 2em;">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nom du patient</th>
+            <th scope="col">Objet</th>
+            <th scope="col">Expert</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for req in requests %}
+          <tr>
+            <td>
+              {% if req.is_incomplete %}
+                <i class="fa fa-redo fa-right-margin" style="color:#076ad4;"></i>
+              {% endif %}
+            </td>
+            <td>{{ req.patient_id.last_name }} {{ req.patient_id.first_name }}</td>
+            <td>
+              <a class="my-access-link" href="{% url 'exams:request_detail' req.pk %}">
+                {{ req.subject }}
+              </a>
+            </td>
+            <td>Dr {{ req.expert_id.last_name }} {{ req.expert_id.first_name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      {% if requests.has_other_pages %}
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <!-- Previous Pagination Button -->
+              {% if requests.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ requests.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            <!-- all elements show -->
+            {% for i in requests.paginator.page_range %}
+              {% if requests.number == i %}
+                <li class="page-item active">
+                  <a class="page-link" href="">{{ i }}</a>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+            <!-- Next Pagination Button -->
+            {% if requests.has_next %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ requests.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>                  </a>
+                </a>
+              </li>
+            {% endif %}
+            </ul>
+      </nav>
+      {% endif %}
+
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        Vous n'avez aucune demande dans la plateforme!
+      </div>
+      {% endif %}
+
+        <!-- Button -->
+        <a href="{% url 'exams:add_request' %}" class="btn btn-info btn-lg btn-block" style="margin-top: 3em">
+          <i class="fas fa-plus fa-right-margin"></i>
+          Ajouter une nouvelle demande d'avis
+        </a>
+
+    </div>
+</div>
+{% endblock %}

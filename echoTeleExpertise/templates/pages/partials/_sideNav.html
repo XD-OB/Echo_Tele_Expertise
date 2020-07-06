@@ -1,0 +1,38 @@
+<div class="col-3">
+    <div class="sidebar">
+        <a {% if request.path == '/pages/list_patients/' %} class="active" {% endif %}
+            href="{% url 'pages:list_patients' %}">
+            <i class="fa fa-right-margin fa-procedures" aria-hidden="true"></i>
+            <span class="text-sidebar">Listes des patients</span>
+        </a>
+        <a {% if request.path == '/pages/telefiles/' %} class="active" {% endif %} href="{% url 'pages:telefiles' %}">
+            <i class="fa fa-right-margin fa-folder-open" aria-hidden="true"></i>
+            <span class="text-sidebar">Télé-dossiers</span>
+        </a>
+        <a {% if request.path == '/pages/list_requests/' %} class="active" {% endif %}
+            href="{% url 'pages:list_requests' %}">
+            <i class="fa fa-right-margin fa-paper-plane"></i>
+            <span class="text-sidebar">Demande d'avis d'expertise</span>
+        </a>
+        <a {% if request.path == '/pages/list_doctors/' %} class="active" {% endif %}
+            href="{% url 'pages:list_doctors' %}">
+            <i class="fa fa-right-margin fa-user-md"></i>
+            <span class="text-sidebar">Listes des médecins</span>
+        </a>
+        <a {% if request.path == '/pages/requests_history/' %} class="active" {% endif %}
+            href="{% url 'pages:requests_history' %}">
+            <i class="fa fa-right-margin fa-comments"></i>
+            <span class="text-sidebar">Historique des demandes</span>
+        </a>
+        <a {% if request.path == '/pages/opinions_history/' %} class="active" {% endif %}
+            href="{% url 'pages:opinions_history' %}">
+            <i class="fa fa-right-margin fa-reply-all"></i>
+            <span class="text-sidebar">Historique des avis</span>
+        </a>
+        <a {% if request.path == '/dwv/' %} class="active" {% endif %}
+            href="{% url 'dwv:display' %}">
+            <i class="fa fa-right-margin fa-chalkboard"></i>
+            <span class="text-sidebar">DICOM Visionnaire</span>
+        </a>
+    </div>
+</div>

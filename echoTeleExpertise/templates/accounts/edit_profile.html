@@ -1,0 +1,351 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+
+{% block title %} Modifier mon profile {% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 6em">
+    <div class="row flex-lg-nowrap">
+        <div class="col">
+            <div class="col mb-3">
+                <div class="card mt-3 mb-3 mr-4 ml-4">
+                    <div class="card-body">
+                        <div class="e-profile">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <div class="mx-auto" style="width: 140px; margin-top: -6em">
+                                        <div class="d-flex justify-content-center align-items-center rounded">
+                                            <img class="rounded-circle edit-profile" alt="photo de profile"
+                                                src="{{ user.avatar.url }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col flex-column flex-sm-row justify-content-between mb-3">
+                                    <div class="text-center">
+                                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">
+                                            Dr {{ user.last_name }} {{ user.first_name }}</h4>
+                                        <div class="text-muted"><small>{{ user.email }}</small></div>
+                                        <div class="mt-2">
+                                            <!-- Edit Image Form -->
+                                            <form id="form-edit-profile_img" action="{% url 'accounts:upload_profile_img' %}" enctype="multipart/form-data" method='POST'>
+                                            {% csrf_token %}
+                                            <button type="button" class="btn btn-info" style="margin-bottom: 2em;"
+                                                onclick='document.getElementById("profile-img_input").click();'>
+                                                <i class="fa fa-fw fa-camera fa-right-margin"></i>
+                                                Changer la photo
+                                            </button> 
+                                            <input id="profile-img_input" type="file" name="profile_img" onchange="submit_new_profile_img()"/>
+                                            </form>
+                                        </div>
+                                        <form action="{% url 'accounts:edit_profile' %}" method='POST'>
+                                        {% csrf_token %}
+                                        <div class="mt-2">
+                                            <!-- Availability -->
+                                            <div class="form-inline col-6 mx-auto">
+                                                    <label class="text-muted">Mon status&nbsp;</label>
+                                                    <select name="online_status" class="form-control" id="exampleFormControlSelect1">
+                                                        <option value='AVAILABLE' 
+                                                            {% if user.online_status == 'AVAILABLE' %}
+                                                                selected
+                                                            {% endif %}
+                                                        >
+                                                            <span style="color:green">
+                                                                <i class="fa fa-dot-circle fa-right-margin"></i>
+                                                                Disponible
+                                                            </span>
+                                                        </option>
+                                                        <option value='HOLIDAY'
+                                                            {% if user.online_status == 'HOLIDAY' %}
+                                                                selected
+                                                            {% endif %}
+                                                        >
+                                                            <span style="color: orange">
+                                                                <i class="fa fa-tree fa-right-margin"></i>
+                                                                En vacance
+                                                            </span>
+                                                        </option>
+                                                        <option value='BUSY'
+                                                            {% if user.online_status == 'BUSY' %}
+                                                                selected
+                                                            {% endif %}
+                                                        >
+                                                            <span style="color:red">
+                                                                <i class="fa fa-clock fa-right-margin"></i>
+                                                                Occupé(e)
+                                                            </span>
+                                                        </option>
+                                                    </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content pt-3">
+                                <div class="tab-pane active">
+                                        <div class="row">
+                                            <div class="col">
+                                                <!-- C.I.N -->
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <!--- Validation Error --->
+                                                            {% if form.cin.errors %}
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                {{ form.cin.errors | striptags }}
+                                                            </div>
+                                                            {% endif %}
+                                                            <!--- Form --->
+                                                            <label>C.I.N</label>
+                                                            <input name="cin" class="form-control" type="text"
+                                                                {% if values.cin %}
+                                                                    value="{{ values.cin }}"
+                                                                {% else %}
+                                                                    value="{{ user.cin }}"
+                                                                {% endif %}
+                                                                {% if form.cin.errors %}
+                                                                    style="border-color:red; color:red;"
+                                                                {% endif %}
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Full Name -->
+                                                <div class="col px-0">
+                                                    <!--- Last Name Validation Error --->
+                                                    {% if form.last_name.errors %}
+                                                        <div class="alert alert-danger" role="alert">
+                                                            <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                            {{ form.last_name.errors | striptags }}
+                                                        </div>
+                                                    {% endif %}
+                                                    <!--- First Name Validation Error --->
+                                                    {% if form.first_name.errors %}
+                                                    <div class="alert alert-danger" role="alert">
+                                                        <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                        {{ form.first_name.errors | striptags }}
+                                                    </div>
+                                                    {% endif %}
+                                                    <!--- Form --->
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label>Nom</label>
+                                                                <input name="last_name" class="form-control" type="text"
+                                                                    {% if values.last_name %}
+                                                                        value="{{ values.last_name }}"
+                                                                    {% else %}
+                                                                        value="{{ user.last_name }}"
+                                                                    {% endif %}
+                                                                    {% if form.last_name.errors %}
+                                                                        style="border-color:red; color:red;"
+                                                                    {% endif %}
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label>Prénom</label>
+                                                                <input name="first_name" class="form-control" type="text"
+                                                                    {% if values.first_name %}
+                                                                        value="{{ values.first_name }}"
+                                                                    {% else %}
+                                                                        value="{{ user.first_name }}"
+                                                                    {% endif %}
+                                                                    {% if form.first_name.errors %}
+                                                                        style="border-color:red; color:red;"
+                                                                    {% endif %}
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Speciality -->
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <!--- Speciality Validation Error --->
+                                                            {% if form.speciality.errors %}
+                                                                <div class="alert alert-danger" role="alert">
+                                                                    <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                    {{ form.speciality.errors | striptags }}
+                                                                </div>
+                                                            {% endif %}
+                                                            <!--- Form --->
+                                                            <label>Spécialité</label>
+                                                            <input name="speciality" class="form-control" type="text"
+                                                                {% if values.speciality %}
+                                                                    value="{{ values.speciality }}"
+                                                                {% else %}
+                                                                    value="{{ user.speciality }}"
+                                                                {% endif %}
+                                                                {% if form.speciality.errors %}
+                                                                    style="border-color:red; color:red;"
+                                                                {% endif %}
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Institution -->
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <!--- Institution Validation Error --->
+                                                            {% if form.institution.errors %}
+                                                                <div class="alert alert-danger" role="alert">
+                                                                    <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                    {{ form.institution.errors | striptags }}
+                                                                </div>
+                                                            {% endif %}
+                                                            <!--- Form --->
+                                                            <label>Etablissement</label>
+                                                            <input name="institution" class="form-control" type="text"
+                                                                {% if values.institution %}
+                                                                    value="{{ values.institution }}"
+                                                                {% else %}
+                                                                    value="{{ user.institution }}"
+                                                                {% endif %}
+                                                                {% if form.institution.errors %}
+                                                                    style="border-color:red; color:red;"
+                                                                {% endif %}
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Phone -->
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <!--- Phone Validation Error --->
+                                                            {% if form.phone.errors %}
+                                                                <div class="alert alert-danger" role="alert">
+                                                                    <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                    {{ form.phone.errors | striptags }}
+                                                                </div>
+                                                            {% endif %}
+                                                            <!--- Form --->
+                                                            <label>Téléphone</label>
+                                                            <input name="phone" class="form-control" type="text"
+                                                                {% if values.phone %}
+                                                                    value="{{ values.phone }}"
+                                                                {% else %}
+                                                                    value="{{ user.phone }}"
+                                                                {% endif %}
+                                                                {% if form.phone.errors %}
+                                                                    style="border-color:red; color:red;"
+                                                                {% endif %}
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Address & city -->
+                                                <div class="col px-0">
+                                                    <!--- Address Validation Error --->
+                                                    {% if form.address.errors %}
+                                                        <div class="alert alert-danger" role="alert">
+                                                            <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                            {{ form.address.errors | striptags }}
+                                                        </div>
+                                                    {% endif %}
+                                                    <!--- City Validation Error --->
+                                                    {% if form.city.errors %}
+                                                    <div class="alert alert-danger" role="alert">
+                                                        <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                        {{ form.city.errors | striptags }}
+                                                    </div>
+                                                    {% endif %}
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <div class="form-group">
+                                                                <label>Adresse professionnelle</label>
+                                                                <input name="address" class="form-control" type="text"
+                                                                    {% if values.address %}
+                                                                        value="{{ values.address }}"
+                                                                    {% else %}
+                                                                        value="{{ user.address }}"
+                                                                    {% endif %}
+                                                                    {% if form.address.errors %}
+                                                                        style="border-color:red; color:red;"
+                                                                    {% endif %}
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label>Ville</label>
+                                                                <input name="city" class="form-control" type="text"
+                                                                    {% if values.city %}
+                                                                        value="{{ values.city }}"
+                                                                    {% else %}
+                                                                        value="{{ user.city }}"
+                                                                    {% endif %}
+                                                                    {% if form.city.errors %}
+                                                                        style="border-color:red; color:red;"
+                                                                    {% endif %}
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Biography -->
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <!--- Biography Validation Error --->
+                                                            {% if form.biography.errors %}
+                                                                <div class="alert alert-danger" role="alert">
+                                                                    <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                    {{ form.biography.errors | striptags }}
+                                                                </div>
+                                                            {% endif %}
+                                                            <!--- Form --->
+                                                            <label>Biographie <small>(facultatif)</small></label>
+                                                            <textarea name="biography" class="form-control" placeholder="Une description courte" rows="5"
+                                                                {% if form.biography.errors %}
+                                                                    style="border-color:red; color:red;"
+                                                                {% endif %}
+                                                            >{% if values.biography %}{{ values.biography | to_whiteescape }}{% else %}{{ user.biography | to_whiteescape }}{% endif %}
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Send the Email param -->
+                                                <div class="form-check mb-3">
+                                                    <input name="is_enable_mail" value='SEND' class="form-check-input" type="checkbox" id="inlineFormCheck"
+                                                        {% if user.is_enable_mail %}
+                                                            checked
+                                                        {% endif %}
+                                                    >
+                                                    <label class="form-check-label text-muted" for="inlineFormCheck">
+                                                    Envoyer les notifications à mon email
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center col-12">
+                            <h3 class="mb-0">{{ user.count_opinion }}</h3>
+                            <small>Avis données</small>
+                        </div>
+                        <div class="text-sm-right">
+                            <div class="text-muted" style="margin-top: 2em;">Joined {{ user.date_joined }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Buttons -->
+                <div class="send-cancel">
+                    <button type="submit" class="btn btn-success btn-lg btn-send">Envoyer</button>
+                    <a href="{% url 'pages:telefiles' %}" class="btn btn-warning btn-lg btn-cancel">Annuler</a>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+{% endblock %}

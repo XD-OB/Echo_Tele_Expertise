@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %} Detail du rapport {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+    <!-- Side Nav -->
+    {% include 'pages/partials/_sideNav.html' %}
+
+    <div class="col-9" style="margin: 2em 0;">
+
+          <!-- Patient Card -->
+          <div class="card telefile-card">
+            <div class="card-header telefile-card-pd0">
+              <table class="table table-borderless telefile-table-brdless">
+                <tbody>
+                  <tr>
+                    <td>Patient:</td>
+                    <td>Zineb Alkati</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  <tr>
+                    <th scope="row">Né(e) le:</th>
+                    <td>01/12/30</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Sexe:</th>
+                    <td>Femme</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">CIN:</th>
+                    <td>EG45689</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Description Card -->
+          <div class="card telefile-card">
+            <div class="card-header">
+              Ma Description
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer class="blockquote-footer">01/02/1998</footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <!-- Document Card -->
+          <div class="card telefile-card">
+            <div class="card-header">
+              Documents Joints
+            </div>   
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  <tr>
+                    <th>
+                      <i class="fas fa-file-alt fa-right-margin"></i>
+                      file-rapport.csv
+                    </th>
+                    <td><i class="fas fa-download"></i></td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <i class="fas fa-file-image fa-right-margin"></i>
+                      file-demo.txt
+                    </th>
+                    <td><i class="fas fa-download"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        <!-- Expert Card -->
+        <div class="card telefile-card">
+          <div class="card-header telefile-card-pd0">
+            <table class="table table-borderless telefile-table-brdless">
+              <tbody>
+                <tr>
+                  <td>Expert:</td>
+                  <td>Dr Zakaria Atouani</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-body telefile-card-pd0">
+            <table class="table telefile-card-mrg0">
+              <tbody>
+                <tr>
+                  <th scope="row">Date de l'examen:</th>
+                  <td>01/12/30</td>
+                </tr>
+                <tr>
+                  <th scope="row">Etablissement:</th>
+                  <td>CHU Hassan II</td>
+                </tr>
+                <tr>
+                  <th scope="row">Service:</th>
+                  <td>Mon service</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Resume of Expert Card -->
+        <div class="card telefile-card">
+          <div class="card-header">
+            Rapport de l'expert:
+          </div>
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+              <footer class="blockquote-footer">01/02/1998</footer>
+            </blockquote>
+          </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

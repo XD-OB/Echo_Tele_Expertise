@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+
+{% block title %} Demande d'avis {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <div class="col-9" style="margin: 2em 0;">
+
+    <!-- Alert -->
+    {% include 'partials/_alerts.html' %}
+
+    {% if doctors %}
+
+    <h3 class="file-header">
+      Demander l'avis d'expertise pour le patient:
+    </h3>
+    <h3 class="file-header_doctor">
+      {{ patient | get_fullname }}
+    </h3>
+
+    <!-- Exam infos -->
+    <div style="margin: 3em 2em">
+      <form action="{% url 'exams:patient_request' patient.pk %}" method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="card">
+          <header class="card-header">
+            <h5>Date de l'examen</h5>
+          </header>
+          <article class="card-body">
+            <!-- Exam date -->
+            <div class="form-group">
+              <!--- Validation Error --->
+              {% if form.exam_date.errors %}
+              <div class="alert alert-danger" role="alert">
+                  <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                  {{ form.exam_date.errors | striptags }}
+              </div>
+              {% endif %}
+              <!--- Form --->
+              <input type="date" name="exam_date" max="3000-12-31" min="1900-01-01" class="form-control"
+                {% if values.exam_date %}
+                  value="{{ values.exam_date }}"
+                {% endif %}
+              >
+            </div>
+          </article>
+        </div>
+
+    </div>
+
+    <!-- Choices of expert -->
+    <div style="margin: 3em 2em">
+      <div class="card">
+        <header class="card-header">
+          <h5>Médecin Expert</h5>
+        </header>
+        <article class="card-body">
+          <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.expert_id.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.expert_id.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <select name="expert_id" class="form-control" id="exampleFormControlSelect1">
+              <option selected="true" value="">Selectionner le médecin</option>
+              {% for doctor in doctors %}
+                <option value="{{ doctor.pk }}"
+                  {% if values.expert_id == doctor.pk|to_str %}
+                    selected
+                  {% endif %}
+                >{{ doctor | get_fullname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Request -->
+    <div style="margin: 3em 2em">
+      <div class="card">
+        <header class="card-header">
+          <h5>La demande</h5>
+        </header>
+        <article class="card-body">
+          <!-- Subject of the Request -->
+          <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.subject.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.subject.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <label>Objet de la demande</label>
+            <textarea name="subject" class="form-control" id="exampleFormControlTextarea1" rows="2">{% if values.subject %}{{ values.subject }}{% endif %}</textarea>
+          </div>
+          <!-- Description -->
+          <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.description.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.description.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <label>Description</label>
+            <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="9">{% if values.description %}{{ values.description }}{% endif %}</textarea>
+          </div>
+          <!-- Files -->
+          <div class="form-group">
+            <div class="custom-file">
+              <input name="files" type="file" class="custom-file-input" id="customFileLangHTML" multiple>
+              <label class="custom-file-label" for="customFileLangHTML" data-browse="Fichiers">
+                Fichiers à joindre
+              </label>
+            </div>
+          </div>
+          <!-- The request is urgent -->
+          <div class="form-group" style="text-align:center">
+            <div class="form-check">
+              <input type="checkbox" name="is_urgent" value="URGENT" id="defaultCheck1" class="form-check-input" style="width: 1em; height:1em;">
+              &nbsp;
+              <label class="form-check-label" for="defaultCheck1" style="color:red; font-weight: 600;">
+                Cette demande est Urgente !
+              </label>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- Buttons -->
+      <div class="send-cancel">
+        <button type="button" class="btn btn-success btn-lg btn-send" data-toggle="modal" data-target="#addNewRequestModal">
+          <i class="fa fa-paper-plane fa-right-margin"></i>
+          Envoyer
+        </button>
+        <a href="{% url 'pages:list_patients' %}" class="btn btn-warning btn-lg btn-cancel">Annuler</a>
+        <!-- Modal -->
+        <div class="modal fade" id="addNewRequestModal" tabindex="-1" role="dialog" aria-labelledby="addNewRequestModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addNewRequestModalLabel">
+                  Confirmer la creation de la nouvelle demande
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Vous ne pouvez pas modifier ou supprimer la demande en cas d'envoi!
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-success">Confirmer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+      </article>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+      Aucun médecin n'est disponible dans la plateforme!
+    </div>
+    {% endif %}
+
+  </div>
+  {% endblock %}

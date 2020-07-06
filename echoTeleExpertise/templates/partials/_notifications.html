@@ -1,0 +1,121 @@
+{% load myconvertions %}
+{% load humanize %}
+
+{% if request.path != '/news/' %}
+<div class="md-2 ml-auto">
+  <ul class="dropdown" style="margin: 0.4em 0">
+    <!-- Icon-->
+    <span class="dropdown-toggle" style="color:#142850" href="#" id="navbarDropdown" role="button"
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span>
+        <i class="fas fa-bell icon-notification"></i>
+        {% if notifications.len > 0 %}
+        <span class="badge badge-danger nbr-notification">
+          {{ notifications.len }}
+        </span>
+        {% endif %}
+      </span>
+    </span>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+      {% if notifications.len > 0 %}
+
+      {% for notif in notifications.summary %}
+      <div class="media notification-media notification-small">
+        <!-- News -->
+        {% if notif.is_close == False %}
+        {% if notif.is_incomplete == False %}
+        {% if notif.expert_id == user %}
+        <!-- The New telefiles-->
+
+        <img class="align-self-center mr-3 rounded-circle notification-img" src="{{ notif.doctor_id.avatar.url }}"
+          alt="profile image">
+        <a class="notification-link" href="{% url 'pages:telefile' notif.pk %}">
+          <div class="media-body">
+            <div class="notification-infos">
+              Nouvelle Demande de {{ notif.doctor_id | get_docname }}
+            </div>
+            <div>
+              {% if notif.is_urgent %}
+              <i class="fa fa-exclamation-triangle fa-right-margin" style="color:#cf0000; font-size: 0.7em"></i>
+              <small>Urgent</small>
+              {% endif %}
+            </div>
+            <small>{{ notif.notification_date | naturaltime }}</small>
+          </div>
+        </a>
+
+        {% else %}
+        <!-- The Experts Vues -->
+        <img class="align-self-center mr-3 rounded-circle notification-img" src="{{ notif.expert_id.avatar.url }}"
+          alt="profile image">
+        <a class="notification-link" href="{% url 'exams:request_detail' notif.pk %}"></a>
+          <div class="media-body">
+            <div class="notification-infos">
+              {{ notif.expert_id | get_docname }} a vu votre demande
+            </div>
+            <div>
+              <i class="fa fa-search fa-right-margin" style="color: green; font-size: 0.7em"></i>
+              <small>Vu</small>
+            </div>
+            <small>{{ notif.notification_date | naturaltime }}</small>
+          </div>
+        </a>
+        {% endif %}
+
+        {% else %}
+        <!-- the new incomplete requests-->
+
+        <img class="align-self-center mr-3 rounded-circle notification-img" src="{{ notif.expert_id.avatar.url }}"
+          alt="profile image">
+        <a class="notification-link" href="{% url 'exams:request_detail' notif.pk %}">
+          <div class="media-body">
+            <div class="notification-infos">
+              {{ notif.expert_id | get_docname }} a besoin de plus d'informations.
+            </div>
+            <div>
+              <i class="fa fa-redo fa-right-margin" style="color:#142850; font-size: 0.7em"></i>
+              <small>Incomplet</small>
+            </div>
+            <small>{{ notif.notification_date | naturaltime }}</small>
+          </div>
+        </a>
+
+        {% endif %}
+        {% else %}
+        <!-- the new solved requests -->
+
+        <img class="align-self-center mr-3 rounded-circle notification-img" src="{{ notif.expert_id.avatar.url }}"
+          alt="profile image">
+        <a class="notification-link" href="{% url 'exams:request_solved_detail' notif.pk %}">
+          <div class="media-body">
+            <div class="notification-infos">
+              {{ notif.expert_id | get_docname }} a envoyé son avis d'expertise.
+            </div>
+            <div>
+              <i class="fa fa-check-circle fa-right-margin" style="color:green; font-size: 0.8em"></i>
+              <small>Terminer</small>
+            </div>
+            <small>{{ notif.notification_date | naturaltime }}</small>
+          </div>
+        </a>
+
+        {% endif %}
+      </div>
+      <hr />
+      {% endfor %}
+
+      <a class="dropdown-item" href="{% url 'news' %}" style="background-color: #eff5fb; text-align: center">
+        <span class="nav-item">
+          <i class="fa fa-plus fa-right-margin"></i>
+          Afficher tous
+        </span>
+      </a>
+    </div>
+    {% else %}
+    <a class="dropdown-item">
+      <span class="nav-item">Pas de notifications</span>
+    </a>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}

@@ -1,0 +1,172 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Echo Tele Expertise</title>
+  <style>
+    body {
+      font-size: 1.5em;
+    }
+
+    table,
+    th,
+    td {
+      margin: 1em 3em;
+      border: 1px solid black;
+      padding: 0.5em;
+    }
+
+    th {
+      text-align: left;
+      background-color: #00737e;
+      color: white;
+    }
+
+    .table-card {
+      padding-left: 3em;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.2em;
+      color: #142850;
+    }
+
+    .descriptions {
+      font-family: Arial;
+      white-space: pre-wrap;
+    }
+
+    .urgent {
+      color: rgb(189, 4, 4);
+      padding-bottom: 1em;
+    }
+
+    .my_header {
+      background-color: #142850;
+      color: white;
+      font-weight: 700;
+      font-size: 1.5em;
+      padding: 1em;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <div class="my_header">
+    Echo Tele Expertise
+  </div>
+  <br />
+
+  <h1>
+    Detail d'une demande d'avis d'expertise
+  </h1>
+
+  <!-- Urgent Badge -->
+  {% if not req.is_urgent %}
+  <div class="urgent">
+    <strong>! </strong>
+    <span>Cette demande a été urgente</span>
+  </div>
+  {% endif %}
+
+  <!-- Patient Card -->
+  <div class="table-card">
+    <h2>
+      Identité du patient:
+    </h2>
+    <table>
+      <tr>
+        <th>Patient:</td>
+        <td>{{ req.patient_id.last_name }} {{ req.patient_id.first_name }}</td>
+      </tr>
+      <tr>
+        <th>Date de l'examen:</th>
+        <td>{{ req.exam_date }}</td>
+      </tr>
+      <tr>
+        <th>CIN:</th>
+        <td>{{ req.patient_id.cin }}</td>
+      </tr>
+      <tr>
+        <th>Sexe:</th>
+        <td>{{ req.patient_id.gender }}</td>
+      </tr>
+      <tr>
+        <th>Né(e) le:</th>
+        <td>{{ req.patient_id.birthdate }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Request Owner Card -->
+  <div class="table-card">
+    <h2>
+      Demandeur d'avis:
+    </h2>
+    <table>
+      <tr>
+        <th>Demandeur:</th>
+        <td>Dr {{ req.doctor_id.last_name }} {{ req.doctor_id.first_name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Spécialité:</th>
+        <td>{{ req.doctor_id.speciality }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Etablissement:</th>
+        <td>{{ req.doctor_id.institution }}</td>
+      </tr>
+      <tr>
+        <th>Adresse professionnelle:</th>
+        <td>{{ req.doctor_id.address }}, {{ req.doctor_id.city }}</td>
+      </tr>
+      <tr>
+        <th>Email:</th>
+        <td>{{ req.doctor_id.email }}</td>
+      </tr>
+      <tr>
+        <th>Téléphone:</th>
+        <td>{{ req.doctor_id.phone }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Request Owner Description Card -->
+  <div class="card">
+    <h2 style="margin: 3em 0 0 3em;">
+      Sa Description:
+    </h2>
+    <div>
+      <h4>
+        {{ req.subject }}
+      </h4>
+      <pre class="descriptions">{{ req.text_doctor }}</pre>
+      <small>{{ req.create_date }}</small>
+    </div>
+  </div>
+
+  <hr style="margin: 3em 0" />
+
+  <!-- Ma Description Card -->
+  <div class="card">
+    <h2 style="margin: 3em 0 0 3em;">
+      Ma Description
+    </h2>
+    <div>
+      <pre class="descriptions">{{ req.text_expert }}</pre>
+      <small>{{ req.solve_date }}</small>
+    </div>
+  </div>
+
+</body>
+
+</html>

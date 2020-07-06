@@ -1,0 +1,42 @@
+{
+  "name": "dwv-simplistic",
+  "short_name": "dwv-simplistic",
+  "description": "Simple medical viewer using DWV (DICOM Web Viewer).",
+  "display": "standalone",
+  "background_color": "#f8852d",
+  "theme_color": "#f86a2d",
+  "scope": ".",
+  "start_url": "index.html",
+  "icons": [
+    {
+      "src": "resources/icons/icon-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "resources/icons/icon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "resources/icons/icon-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "resources/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "resources/icons/icon-256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "resources/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %} Modifier le profile du patient {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <!-- Patient Informations -->
+  <div class="col-9" style="margin: 2em 0;">
+
+    <!-- Alert -->
+    {% include 'partials/_alerts.html' %}
+
+    <div class="container">
+        <div class="row flex-lg-nowrap">
+            <div class="col">
+                <div class="col mb-3">
+                    <form action="{% url 'patients:edit_patient' patient.pk %}" method='POST'>
+                        {% csrf_token %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="e-profile">
+                                    <div class="tab-content pt-3">
+                                        <div class="tab-pane active">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <!-- C.I.N -->
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>C.I.N</label>
+                                                                    <input class="form-control" type="text"
+                                                                        value="{{ patient.cin }}" disabled>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Full Name -->
+                                                        <div class="col px-0">
+                                                            <!--- Last Name Validation Error --->
+                                                            {% if form.last_name.errors %}
+                                                                <div class="alert alert-danger" role="alert">
+                                                                    <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                    {{ form.last_name.errors | striptags }}
+                                                                </div>
+                                                            {% endif %}
+                                                            <!--- First Name Validation Error --->
+                                                            {% if form.first_name.errors %}
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                {{ form.first_name.errors | striptags }}
+                                                            </div>
+                                                            {% endif %}
+                                                            <!--- Form --->
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label>Nom</label>
+                                                                        <input name="last_name" class="form-control" type="text"
+                                                                            {% if values.last_name %}
+                                                                                value="{{ values.last_name }}"
+                                                                            {% else %}
+                                                                                value="{{ patient.last_name }}"
+                                                                            {% endif %}
+                                                                            {% if form.last_name.errors %}
+                                                                                style="border-color:red; color:red;"
+                                                                            {% endif %}
+                                                                        >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label>Prénom</label>
+                                                                        <input name="first_name" class="form-control" type="text"
+                                                                        {% if values.first_name %}
+                                                                            value="{{ values.first_name }}"
+                                                                        {% else %}
+                                                                            value="{{ patient.first_name }}"
+                                                                        {% endif %}
+                                                                        {% if form.first_name.errors %}
+                                                                            style="border-color:red; color:red;"
+                                                                        {% endif %}
+                                                                        >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Sexe -->
+                                                        <fieldset class="form-group">
+                                                            <div class="row">
+                                                            <legend class="col-form-label col-sm-2 pt-0">Sexe</legend>
+                                                            <div class="col-sm-10">
+                                                                <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value='M'
+                                                                    {% if values.gender == 'M' %}
+                                                                        checked
+                                                                    {% else %}
+                                                                        {% if not values.gender and patient.gender == 'M' %}
+                                                                            checked
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                >
+                                                                <label class="form-check-label" for="gridRadios1">Homme</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value='F'
+                                                                    {% if values.gender == 'F' %}
+                                                                        checked
+                                                                    {% else %}
+                                                                        {% if not values.gender and patient.gender == 'F' %}
+                                                                            checked
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                >
+                                                                <label class="form-check-label" for="gridRadios2">Femme</label>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                        </fieldset>
+
+                                                        <!-- Birthday -->
+                                                        <div class="form-group">
+                                                            <label>Date de naissance</label>
+                                                            <input type="date" name="birthdate" max="3000-12-31" min="1900-01-01" class="form-control"
+                                                                {% if values.birthdate %}
+                                                                    value="{{ values.birthdate }}"
+                                                                {% else %}
+                                                                    value="{{ patient.birthdate | date:'Y-m-d' }}"
+                                                                {% endif %}
+                                                            >
+                                                        </div>
+
+                                                        <!-- Phone -->
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <!--- Phone Validation Error --->
+                                                                    {% if form.phone.errors %}
+                                                                    <div class="alert alert-danger" role="alert">
+                                                                        <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                                                                        {{ form.phone.errors | striptags }}
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    <!--- Form --->
+                                                                    <label>Téléphone</label>
+                                                                    <input name="phone" class="form-control" type="text" 
+                                                                        {% if values.phone %}
+                                                                            value="{{ values.phone }}"
+                                                                        {% else %}
+                                                                            value="{{ phone }}"
+                                                                        {% endif %}
+                                                                        {% if form.phone.errors %}
+                                                                            style="border-color:red; color:red;"
+                                                                        {% endif %}
+                                                                    >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Buttons -->
+                        <div class="send-cancel">
+                            <button type="submit" class="btn btn-success btn-lg btn-send">
+                                Enregister
+                            </button>
+                            <a href="{% url 'patients:patient' patient.pk %}" class="btn btn-warning btn-lg btn-cancel">
+                                Annuler
+                            </a>
+                        </div>
+                    </form>
+    
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}

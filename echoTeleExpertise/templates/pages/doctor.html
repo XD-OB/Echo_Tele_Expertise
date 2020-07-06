@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %} Dr {{ doctor.last_name }} {{ doctor.first_name }} {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <!-- Doctor Informations -->
+  <div class="col-9">
+
+    <div class="container doctor-detail-container">
+      <div class="row">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center">
+              <img class="avatar-doctor rounded-circle" alt="photo de profile" src="{{ doctor.avatar.url }}">
+              <h4 class="card-title">
+                Dr {{ doctor.last_name }} {{ doctor.first_name }}
+              </h4>
+              <h6 class="card-subtitle mb-2 text-muted">
+                <i class="fa fa-stethoscope fa-right-margin"></i>
+                {{ doctor.speciality }}
+              </h6>
+              <!-- Availability -->
+              <div style="margin: 1.2em 0">
+                {% if doctor.online_status == 'AVAILABLE' %}
+                <span style="color:green">
+                    <i class="fa fa-dot-circle fa-right-margin"></i>
+                    Disponible
+                </span>
+                {% elif doctor.online_status == 'HOLIDAY' %}
+                <span style="color: orange">
+                    <i class="fa fa-tree fa-right-margin"></i>
+                    En vacance
+                </span>
+                {% else %}
+                <span style="color:red">
+                    <i class="fa fa-clock fa-right-margin"></i>
+                    Occupé(e)
+                </span>
+                {% endif %}
+              </div>
+              <p class="biography">{{ doctor.biography }}</p>
+            </div>
+            <p class="card-text">
+            <table class="table telefile-card-mrg0 table-doctor-infos">
+              <tbody>
+                <tr>
+                  <th scope="row">Email:</th>
+                  <td>{{ doctor.email }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Téléphone:</th>
+                  <td>{{ doctor.phone }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Etablissement:</th>
+                  <td>{{ doctor.institution }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Adresse professionnelle:</th>
+                  <td>{{ doctor.address }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ville:</th>
+                  <td>{{ doctor.city }}</td>
+                </tr>
+              </tbody>
+            </table>
+            </p>
+            <div class="text-center">
+              <div class="col-12">
+                <h3 class="mb-0">{{ doctor.count_opinion }}</h3>
+                <small>Avis données</small>
+              </div>
+              <a href="{% url 'exams:ask_request' doctor.pk %}" class="btn btn-info" style="margin-top: 1em">
+                Demander un avis d'expertise
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  {% endblock %}

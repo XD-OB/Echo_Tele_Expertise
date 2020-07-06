@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+
+{% block title %} {{ patient.last_name }} {{ patient.first_name }} {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <!-- Doctor Informations -->
+  <div class="col-9" style="margin: 2em 0;">
+    
+    <!-- Alert -->
+    {% include 'partials/_alerts.html' %}
+    
+    <div class="container">
+      <div class="card" style="margin: 0 1em">
+        <div class="card-header" style="font-size: 1.3em;">
+          Identité du patient:
+        </div>
+        <div class="card-body">
+          <div class="card-body telefile-card-pd0">
+            <table class="table telefile-card-mrg0">
+              <tbody>
+                <tr>
+                  <th scope="row">C.I.N</th>
+                  <td>{{ patient.cin }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Nom</th>
+                  <td>{{ patient.last_name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Prénom</th>
+                  <td>{{ patient.first_name }}</td>
+                </tr>
+                <!-- List of phone numbers -->
+                <tr>
+                  <th scope="row">Téléphone</th>
+                  <td>{{ main_phone }}</td>
+                </tr>
+                {% for phone in phones %}
+                  <tr>
+                    <th scope="row"></th>
+                    <td>{{ phone }}</td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <th scope="row">Sexe</th>
+                  <td>{{ patient.get_gender_display }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Date de naissance:</th>
+                  <td>{{ patient.birthdate }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="send-cancel">
+        <a href="{% url 'exams:patient_request' patient.pk %}" class="btn btn-primary btn-lg btn-send">
+          <i class="fa fa-plus fa-right-margin"></i>
+          Demander un avis d'expertise pour ce patient
+        </a>
+        <a href="{% url 'patients:edit_patient' patient.pk %}" class="btn btn-info btn-lg btn-send">
+          <i class="fa fa-pencil-alt fa-right-margin"></i>
+          Modifier les informations de ce patient
+        </a>
+        <form action="{% url 'patients:delete_patient' patient.pk %}" method='POST'>
+          {% csrf_token %}
+          <!-- The Button that trigger the modal -->
+          <button type="button" class="btn btn-danger btn-lg btn-cancel" data-toggle="modal" data-target="#deletePatientModal">
+            <i class="fa fa-trash fa-right-margin"></i>
+            Supprimer ce patient
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="deletePatientModal" tabindex="-1" role="dialog" aria-labelledby="deletePatientModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deletePatientModalLabel">Confirmer la supression du patient</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Votre relation avec ce patient va être supprimer definitivement. 
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                  <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash fa-right-margin"></i>
+                    Confirmer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+    </div>
+
+    </div>
+
+  </div>
+  {% endblock %}

@@ -1,0 +1,615 @@
+body {
+    background-color: #e6e4e4;
+}
+
+/******************** NavBar ********************/
+
+.navbar {
+    background-color: #142850;
+    box-shadow: 0 0.15em #a8a7a7;
+}
+
+.nav-title {
+    font-family: 'Kalam', cursive;
+    margin-left: 0.5em;
+    font-size: 1.2em;
+}
+
+.icon-notification {
+  font-size: 1.5em;
+  color: white;
+}
+
+span.nbr-notification {
+  position: absolute;
+  top: 0;
+  left: 3em;
+  width: 1.4em;
+  font-size: 0.6em;
+}
+
+.notification-media {
+  margin: 0 1em;
+}
+
+.notification-link {
+  text-decoration:none;
+  color: black;
+}
+
+.notification-link:hover {
+  text-decoration:none;
+  color: black;
+}
+
+.notification-small:hover {
+  text-decoration:none;
+  color: black;
+  background-color: #eff5fb;
+}
+
+.notification-img {
+  width: 2.2em;
+  height: 2em;
+}
+
+.notification-infos {
+  font-weight: 600;
+  font-size: 0.9em;
+  min-width: 16em;
+}
+
+.notification-owner-name {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.notification-big-img {
+  width: 3.3em;
+  height: 3em;
+}
+
+.notifications-summary-card {
+  margin: 0 1em;
+  margin-bottom: 3em;
+}
+
+.notifications-summary-card-body {
+  text-align: center;
+}
+
+span.notifications-news-nbr {
+  color: green;
+  font-weight: 700;
+}
+
+.nav-profile-img {
+  width: 2em;
+  height: 1.8em;
+}
+
+.nav-board-table {
+  display: inline;
+}
+
+.nav-board-table-icon {
+  font-size: 1.4em;
+}
+
+.nav-profile-name {
+  display: inline;
+}
+
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+a.btn-margin {
+    margin: 0.2em 0.5em;
+}
+
+i.fa-right-margin {
+    margin-right:0.5em;
+}
+
+.btn-login-style {
+    background-color: #00909E;
+    border-color: #27496D;
+}
+
+.btn-bord-table {
+    border: none;
+    color: white;
+}
+
+/******************** Top Bar Contact *******************/
+
+.social {
+  color: #142850;
+  font-weight: 600;
+}
+
+.social-icons i {
+  font-size: 1.5em;
+  margin-left: 1em;
+}
+
+/********************************************************/
+
+img.d-block {
+  object-fit: cover;
+  height:40em;
+}
+
+.carousel-inner {
+    height:40em;
+}
+
+.index-description {
+    font-size: 1.5em;
+    margin: 2em 1.5em;
+    text-align: center;
+}
+
+.footer-copyright {
+    font-size: 0.8em;
+    background-color: #27496D;
+    color: #e6e4e4;
+}
+
+/********* Top Members Carousel *******/
+
+.testimonial{
+  margin-top: 1em;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
+  grid-gap:20px;
+}
+.testimonial .card{
+  position:relative;
+  margin:0 auto;
+  width:350px;
+  background:#DAE1E7;
+  padding:20px;
+  box-sizing:border-box;
+  text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+.testimonial .card .layer{
+  position:absolute;
+  top:calc(100% - 2px);
+  left:0;
+  height:100%;
+  width:100%;
+  background:linear-gradient(#00909E, #27496D);
+  z-index:1;
+  transition:0.5s;
+}
+
+.testimonial .card:hover .layer{
+  top:0;
+}
+
+.testimonial .card .content{
+  position:relative;
+  z-index:2;
+}
+
+.testimonial .card .content p{
+  font-family: 'Handlee', cursive;
+  font-weight: 500;
+  font-size:0.8em;
+  line-height:24px;
+  color: #142850;
+}
+
+.testimonial .card:hover .content p{
+  color: #DAE1E7;
+}
+
+.testimonial .card .content .details h2{
+  font-size:1em;
+  font-weight: 600;
+  color: #142850;
+}
+
+.testimonial .card:hover .content .details h2{
+  color: white;
+}
+
+.testimonial .card .content .details span{
+  color:#00909E;
+  font-size: 0.8em;
+  font-style: italic;
+  transition:0.5s;
+}
+
+.testimonial .card:hover .content .details span{
+  color:#DAE1E7;
+}
+
+/**************************************/
+
+.card-header {
+    background-color: #00909E;
+    color: white;
+}
+
+.btn-register-register {
+    background-color: #01af01;
+    border-color: #01af01;
+    font-size: 1.2em;
+    margin-top: 2.5em;
+}
+
+/*********** Side Navbar **********/
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  background-color: #27496D;
+  position: fixed;
+  height: 100vh;
+  overflow: auto;
+}
+
+.sidebar a {
+  margin: 0.5em 0;
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #142850;
+  border-left: 5px solid #00909E;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #00909E;
+  border-left: 5px solid #142850;
+}
+
+span.text-sidebar {
+  display: inline;
+}
+
+/********** Telefile *************/
+
+div.telefile-card {
+    margin-bottom: 2em;
+}
+
+div.telefile-card-pd0 {
+    padding: 0;
+}
+
+div.telefile-card-mrg0 {
+    margin: 0;
+}
+
+.telefile-table-brdless {
+    margin: 0;
+    color: white;
+}
+
+.btn-block {
+    margin-bottom: 1em;
+}
+
+/************** add_request *************/
+
+div.send-cancel {
+  padding: 2em;
+}
+
+.btn-send {
+  font-size: 1em;
+    font-weight: 600;
+    padding: 0.6em 1.6em;
+    float: left;
+}
+  
+.btn-cancel {
+    font-size: 1em;
+    font-weight: 600;
+    padding: 0.6em 1.6em;
+    float: right;
+}
+
+/********** Edit Profile *************/
+
+img.edit-profile {
+  border: 1px solid #DAE1E7;
+  object-fit: cover;
+  width: 9rem;
+  height: 9rem;
+  box-shadow:0 10px 20px
+    rgba(0,0,0,.2);
+}
+
+#profile-img_input {
+  display: none;
+}
+
+/************************************/
+
+.file-header {
+    text-align: center;
+    font-weight: 700;
+}
+
+.file-header_doctor {
+    text-align: center;
+    font-family: 'Kalam', cursive;
+    font-weight: 500;
+    margin-bottom: 1em;
+}
+
+.my-access-link {
+    color:#142850;
+    text-decoration:none;
+    font-weight: 600;
+}
+
+#buttons-view {
+    display: block;
+}
+
+#send-result {
+    display: none;
+}
+
+#complete-request {
+    display: none;
+}
+
+#additional_infos {
+    display: none;
+}
+
+/********** Doctor Detail ***********/
+
+.doctor-detail-container {
+  margin-top: 8em;
+  margin-left: 0;
+}
+
+.avatar-doctor {
+  border: 0.3rem solid rgba(#fff, 0.3);
+  margin-top: -6rem;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  width: 9rem;
+  height: 9rem;
+}
+
+p.biography {
+  margin: 3em 1em;
+}
+
+/************ Pagination  *************/
+
+.page-item.active .page-link {
+  color: #fff;
+  background-color: #00909E;
+  border-color: #00909E;
+}
+
+/**************** Search bar *****************/
+
+div.search-btn {
+  text-align: center;
+}
+
+div.search-btn button {
+  width: 50%;
+}
+
+.small-info {
+  margin-left: 1em;
+}
+
+.small-info i {
+  margin-right: 0.5em;
+}
+
+/****************** Toggle Button **************/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.toggle-switch-box {
+  display: inline-block;
+  margin: auto;
+  cursor: pointer;
+  outline: 0;
+  overflow: hidden;
+}
+.toggle-switch-box input {
+  display: none;
+}
+.toggle-switch-box input:checked + .toggle-switch-item::before {
+  left: 0;
+}
+.toggle-switch-box input:checked + .toggle-switch-item::after {
+  right: -100%;
+}
+.toggle-switch-box input:checked + .toggle-switch-item .switch-button {
+  left: calc(100% - 1.8em);
+}
+.toggle-switch-box .toggle-switch-item {
+  position: relative;
+  display: block;
+  min-width: 7em;
+  min-height: 2em;
+}
+.toggle-switch-box .toggle-switch-item::before, .toggle-switch-box .toggle-switch-item::after,
+.toggle-switch-box .toggle-switch-item .switch-button {
+  position: absolute;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+}
+.toggle-switch-box .toggle-switch-item::before, .toggle-switch-box .toggle-switch-item::after {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+.toggle-switch-box .toggle-switch-item::before {
+  left: -100%;
+  padding: 0 23px 0 0;
+  background-color: transparent;
+  content: attr(data-tg-on);
+  transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toggle-switch-box .toggle-switch-item::after {
+  right: 0;
+  padding: 0 0 0 23px;
+  background-color: #bdbdbd;
+  content: attr(data-tg-off);
+  transition: right 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toggle-switch-box .toggle-switch-item .switch-button {
+  left: 5px;
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+  border: 3px solid transparent;
+  background-color: #fff;
+  border-radius: 50%;
+  z-index: 1;
+  transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.switch-rounded {
+  border-radius: 2em;
+}
+
+.switch-rectangular {
+  border-radius: 3px;
+}
+
+.switch-bg-danger .toggle-switch-item::before {
+  background-color: #d9534f;
+}
+
+.switch-bg-info .toggle-switch-item::before {
+  background-color: #00909E;
+}
+
+.switch-bg-success .toggle-switch-item::before {
+  background-color: green;
+}
+
+/***********************************************/
+
+.badge-urgent {
+  margin: 0;
+  margin-right: 0.5em;
+  padding: 0.3em 1em;
+  float: right;
+  font-size:1em;
+}
+
+.descriptions {
+  font-family: Arial;
+  font-size: 1em;
+  white-space:pre-wrap;
+}
+
+.wrong-input {
+  border-width: 2em;
+  border-color: red;
+}
+
+/****************** Respensive *****************/
+
+@media screen and (max-width: 1100px) {
+  .sidebar {
+    position: fixed;
+    width: 170px;
+    height: 100%;
+  }
+  .sidebar a {
+    width: 170px;
+    float: left;
+  }
+  .btn-send {
+    margin-bottom: 1em;
+    font-weight: 500;
+    width: 100%;
+  }
+  .btn-cancel {
+    font-weight: 500;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .sidebar {
+    width: 70px;
+  }
+  .sidebar a {
+    font-size: 1.3em;
+    width: 70px;
+  }
+  span.text-sidebar {
+    display: none;
+  }
+  .table-doctor-infos {
+    font-size: 14px;
+  }
+  .carousel-inner {
+    height:25em;
+  }
+  img.d-block {
+    object-fit: cover;
+    height:25em;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .nav-profile-name {
+    display: none;
+  }
+  .nav-board-table {
+    display: none;
+  }
+  .nav-board-table-icon {
+    font-size: 1.6em;
+  }
+}
+
+@media screen and (max-height: 620px) {
+  .sidebar {
+    position: fixed;
+    width: 70px;
+    height: 100%;
+  }
+  .sidebar a {
+    margin: 0;
+    width: 70px;
+    float: left;
+  }
+  span.text-sidebar {
+    display: none;
+  }
+}

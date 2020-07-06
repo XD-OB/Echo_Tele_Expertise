@@ -1,0 +1,55 @@
+{% load static %}
+{% load myconvertions %}
+
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark navbar-style">
+
+  <!-- Brand name & image -->
+  <a class="navbar-brand" href="{% url 'index' %}">
+    <img src="{% static 'img/logo.jpg' %}" class="logo" width="60" height="40" alt="logo" />
+    <span class="nav-title"> Echo Tele Expertise </span>
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <!-- Menu -->
+    {% if user.is_authenticated %}
+    <div class="row ml-auto">
+
+      <!-- Mini Profile -->
+      {% include 'partials/_mini_profile.html' %}
+
+      <!-- Board Table -->
+      {% if request.path == '/' or request.path == '/accounts/edit_profile/' %}
+      <div class="md-4">
+        <a class="btn btn-outline-primary btn-margin btn-bord-table" href="{% url 'pages:telefiles' %}">
+          <i class="fas fa-columns fa-right-margin nav-board-table-icon"></i>
+          <span class="nav-item nav-board-table">Tableau de bord</span>
+        </a>
+      </div>
+      {% endif %}
+
+      <!-- Notifications -->
+      {% include 'partials/_notifications.html' %}
+
+    </div>
+
+  {% else %}
+
+  <!-- Login & Register buttons -->
+  <div class="ml-auto">
+    <a class="btn btn-primary btn-margin btn-login-style" href="{% url 'accounts:login' %}">
+      <i class="fas fa-sign-in-alt fa-right-margin"></i> <span class="nav-item">Connexion</span>
+    </a>
+    <a class="btn btn-outline-success btn-margin" href="{% url 'accounts:register' %}">
+      <i class="fas fa-plus fa-right-margin"></i> <span class="nav-item">Inscription</span>
+    </a>
+  </div>
+  {% endif %}
+
+  </div>
+</nav>

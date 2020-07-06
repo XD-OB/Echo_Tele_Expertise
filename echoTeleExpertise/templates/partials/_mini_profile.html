@@ -1,0 +1,32 @@
+{% load myconvertions %}
+
+<div class="md-4">
+    <ul class="nav-item dropdown">
+        <span class="nav-link dropdown-toggle" style="color:white" href="#" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if user.is_staff %}
+            <i class="fas fa-wrench fa-right-margin"></i>
+            <span class="nav-item nav-profile-name">Admin {{ user | get_fullname }}</span>
+            {% else %}
+            <img class="align-self-center mr-3 rounded-circle nav-profile-img" src="{{ user.avatar.url }}"
+                alt="profile image">
+            <span class="nav-item nav-profile-name">{{ user | get_docname }}</span>
+            {% endif %}
+        </span>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">
+                <i class="fas fa-user-edit fa-right-margin"></i> <span class="nav-item">Editer le profil</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:{
+              document.getElementById('logout').submit()
+            }">
+                <i class="fas fa-power-off fa-right-margin"></i> <span class="nav-item">Se déconnecter</span>
+            </a>
+            <form id="logout" action="{% url 'accounts:logout' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" />
+            </form>
+        </div>
+    </ul>
+</div>

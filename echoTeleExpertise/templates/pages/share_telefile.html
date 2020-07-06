@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %} Partager le télé-dossier {{ req.pk }} {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+    <!-- Side Nav -->
+    {% include 'pages/partials/_sideNav.html' %}
+
+    <!-- Doctor Card -->
+    <div class="col-9" style="margin: 2em 0;">
+
+        <!-- Alert -->
+        {% include 'partials/_alerts.html' %}
+
+        <h3 class="file-header">
+          Partager le télé-dossier
+        </h3>
+
+        <div class="card telefile-card">
+            <div class="card-header telefile-card-pd0">
+              <table class="table table-borderless telefile-table-brdless">
+                <tbody>
+                  <tr>
+                    <td>Demandeur d'avis:</td>
+                    <td>Dr {{ req.doctor_id.last_name }} {{ req.doctor_id.first_name }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  <tr>
+                    <th scope="row">Spécialité:</th>
+                    <td>{{ req.doctor_id.speciality }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Etablissement:</th>
+                    <td>{{ req.doctor_id.institution }}</td>
+                  </tr>
+                  <tr>
+                  <tr>
+                    <th scope="row">Date de l'examen:</th>
+                    <td>{{ req.exam_date }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Patient Card -->
+          <div class="card telefile-card">
+            <div class="card-header telefile-card-pd0">
+              <table class="table table-borderless telefile-table-brdless">
+                <tbody>
+                  <tr>
+                    <td>Patient:</td>
+                    <td>{{ req.patient_id.last_name }} {{ req.patient_id.first_name }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  <tr>
+                    <th scope="row">CIN:</th>
+                    <td>{{ req.patient_id.cin }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Sexe:</th>
+                    <td>{{ req.patient_id.gender }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Né(e) le:</th>
+                    <td>{{ req.patient_id.birthdate }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Description Card -->
+          <div class="card telefile-card">
+            <div class="card-header">
+              Description
+
+              <!-- Urgent Badge -->
+              {% if req.is_urgent %}
+              <span class="badge badge-danger badge-urgent">
+                <i class="fa fa-exclamation-triangle fa-right-margin"></i>
+                Urgent
+              </span>
+              {% endif %}
+
+            </div>
+            <div class="card-body">
+              <h5 style="margin-bottom: 1em;">
+                {{ req.subject }}
+              </h5>
+              <blockquote class="blockquote mb-0">
+                <p>{{ req.text_doctor }}</p>
+                <footer class="blockquote-footer">
+                  {{ req.create_date | naturaltime }}
+                </footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <!-- Document Card -->
+          {% if documents %}
+          <div class="card telefile-card">
+            <div class="card-header">
+              Documents Joints
+            </div>   
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  {% for document in documents %}
+                  <tr>
+                    <th>
+                      <a href="/media/{{ document.file}}" style="color:#142850; text-decoration:none">
+                        <i class="fas fa-file-alt fa-right-margin"></i>
+                        {{ document.name }}
+                      </a>
+                    </th>
+                    <td>
+                      <a href="/media/{{ document.file }}" download><i class="fas fa-download"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Share the Request -->
+          <div id="share-result">
+            <hr style="margin: 4em" />
+              <div class="card telefile-card">
+                <div class="card-header">
+                  Envoyé la demande aux Médecins:
+                </div> 
+                <div class="card-body telefile-card-pd0">
+                  <div class="form-group" style="margin: 1em">
+                    <!-- Search Area -->
+                    <form action="{% url 'pages:share_telefile' req.pk %}">
+                      <div class="form-row">
+                        <!-- Speciality -->
+                        <div class="col-md-5 mb-3">
+                          <label class="sr-only">Spécialité</label>
+                          <input type="text" name="search_speciality" class="form-control" placeholder="Spécialité"
+                            value="{{ values.search_speciality }}">
+                        </div>
+                        <!-- City -->
+                        <div class="col-md-4 mb-3">
+                          <label class="sr-only">Ville</label>
+                          <input type="text" name="search_city" class="form-control" placeholder="Ville"
+                            value="{{ values.search_city }}">
+                        </div>
+                        <!-- Start search button -->
+                        <div class="col-md-3 mb-3 search-btn">
+                          <button class="btn btn-info" type="submit">
+                            <i class="fa fa-right-margin fa-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                    <hr/>
+                    <form action="{% url 'pages:share_request' req.pk %}" method="POST" enctype='multipart/form-data'>
+                      {% csrf_token %}
+                    <!-- Select Doctor -->
+                    {% if experts %}
+                    <label class="sr-only">Medecins</label>
+                    <select name="expert" class="form-control">
+                      <option selected="true" value="">Les médecins</option>
+                      {% for expert in experts %}
+                        <option value="{{ expert.pk }}">
+                          {{ expert.last_name }} {{ expert.first_name }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                    {% else %}
+                    <div style="color:red; text-align:center">
+                      Aucun Médecin avec cette spécification
+                    </div>
+                    {% endif %}
+                    <!-- New Subject -->
+                    <div class="form-group">
+                      <div style="padding: 1em 0 0.5em 0.5em;">Mon Rapport:</div>
+                      <div class="card-body telefile-card-pd0">
+                        <textarea name="new_subject" class="form-control" id="exampleFormControlTextarea1" rows="1" placeholder="Objet"></textarea>
+                      </div>
+                    </div>
+                    <!-- Additional Description -->
+                    <div class="form-group">
+                      <div class="card-body telefile-card-pd0">
+                        <textarea name="text_additional" class="form-control" id="exampleFormControlTextarea1" rows="6" placeholder="Description supplémentaire"></textarea>
+                      </div>
+                    </div>
+                    <!-- Files -->
+                    <div class="form-group">
+                      <div class="custom-file">
+                        <input name="new_files" type="file" class="custom-file-input" id="customFileLangHTML" multiple>
+                        <label class="custom-file-label" for="customFileLangHTML" data-browse="Fichiers">
+                          Fichiers à joindre (facultatif)
+                        </label>
+                      </div>
+                    </div>
+                    <hr>
+                    <!-- The request is urgent -->
+                    <div class="form-group" style="text-align:center">
+                      <div class="form-check">
+                        <input type="checkbox" name="is_urgent" value="URGENT" id="defaultCheck1" class="form-check-input" style="width: 1em; height:1em;">
+                        &nbsp;
+                        <label class="form-check-label" for="defaultCheck1" style="color:red; font-weight: 600;">
+                          Cette demande est Urgente !
+                        </label>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <!-- Send-Cancel Buttons -->
+            <div class="send-cancel">
+              <!-- buttons -->
+              <button type="button" class="btn btn-success btn-lg btn-send" data-toggle="modal" data-target="#shareRequestModal">
+                <i class="fa fa-paper-plane fa-right-margin"></i>
+                Envoyer la demande
+              </button>
+              <a href="{% url 'pages:telefile' req.pk %}" class="btn btn-warning btn-lg btn-cancel">
+                Annuler
+              </a>
+              <!-- Modal -->
+              <div class="modal fade" id="shareRequestModal" tabindex="-1" role="dialog" aria-labelledby="shareRequestModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="additionalInfosModalLabel">
+                        Confirmer le partage de la demande
+                      </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Cette demande sera partager avec l'expert et vous serais propriétaire de cette demandeur de l'avis d'expertise, mais le nom de l'origine demandeur sera afficher avec sa description, cette demande ne sera pas modifiable après l'envoi!
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                      <button type="submit" class="btn btn-success">
+                        <i class="fa fa-paper-plane fa-right-margin"></i>
+                        Envoyer
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </form>
+
+
+    </div>
+</div>
+{% endblock %}

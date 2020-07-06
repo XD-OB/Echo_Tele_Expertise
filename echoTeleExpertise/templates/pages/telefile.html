@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+{% load humanize %}
+
+{% block title %} Télé-dossier {{ req.pk }} {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <!-- Doctor Card -->
+  <div class="col-9" style="margin: 2em 0;">
+
+    <!-- Alert -->
+    {% include 'partials/_alerts.html' %}
+
+    <h3 class="file-header">
+      Télé-dossier
+    </h3>
+    <br/>
+
+    <div class="card telefile-card">
+      <div class="card-header telefile-card-pd0">
+        <table class="table table-borderless telefile-table-brdless">
+          <tbody>
+            <tr>
+              <td>Demandeur d'avis:</td>
+              <td>{{ req.doctor_id | get_docname }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-body telefile-card-pd0">
+        <table class="table telefile-card-mrg0">
+          <tbody>
+            <tr>
+              <th scope="row">Spécialité:</th>
+              <td>{{ req.doctor_id.speciality }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Etablissement:</th>
+              <td>{{ req.doctor_id.institution }}</td>
+            </tr>
+            <tr>
+            <tr>
+              <th scope="row">Date de l'examen:</th>
+              <td>{{ req.exam_date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Patient Card -->
+    <div class="card telefile-card">
+      <div class="card-header telefile-card-pd0">
+        <table class="table table-borderless telefile-table-brdless">
+          <tbody>
+            <tr>
+              <td>Patient:</td>
+              <td>{{ req.patient_id | get_fullname }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-body telefile-card-pd0">
+        <table class="table telefile-card-mrg0">
+          <tbody>
+            <tr>
+              <th scope="row">CIN:</th>
+              <td>{{ req.patient_id.cin }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Sexe:</th>
+              <td>{{ req.patient_id.get_gender_display }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Né(e) le:</th>
+              <td>{{ req.patient_id.birthdate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Description Card -->
+    <div class="card telefile-card">
+      <div class="card-header">
+        Description
+
+        <!-- Urgent Badge -->
+        {% if req.is_urgent %}
+        <span class="badge badge-danger badge-urgent">
+          <i class="fa fa-exclamation-triangle fa-right-margin"></i>
+          Urgent
+        </span>
+        {% endif %}
+
+      </div>
+      <div class="card-body">
+        <h5 style="margin-bottom: 1em;">
+          {{ req.subject }}
+        </h5>
+        <hr/>
+        <blockquote class="blockquote mb-0">
+          <pre class="descriptions">{{ req.text_doctor }}</pre>
+          <footer class="blockquote-footer">
+            {{ req.create_date | naturaltime }}
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- Document Card -->
+    {% if documents %}
+    <div class="card telefile-card">
+      <div class="card-header">
+        Documents Joints
+      </div>
+      <div class="card-body telefile-card-pd0">
+        <table class="table telefile-card-mrg0">
+          <tbody>
+            {% for document in documents %}
+            <tr>
+              <th>
+                <a href="/media/{{ document.file}}" style="color:#142850; text-decoration:none">
+                  <i class="fas fa-file-alt fa-right-margin"></i>
+                  {{ document.name }}
+                </a>
+              </th>
+              <td>
+                <a href="{% url 'dwv:display' %}?input='http://127.0.0.1:8000/dwv/data/media/{{ document.file }}'"><i class="fas fa-tv"></i></a>
+              </td>
+              <td>
+                <a href="/media/{{ document.file }}" download><i class="fas fa-download"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Buttons -->
+    <div id="main-buttons">
+      <button type="button" class="btn btn-primary btn-lg btn-block" onclick="display_req_infos();">
+        <i class="fas fa-question fa-right-margin"></i>
+        Demander des informations complémentaires
+      </button>
+      <a href="{% url 'pages:share_telefile' req.pk %}" class="btn btn-info btn-lg btn-block">
+        <i class="fas fa-share fa-right-margin"></i>
+        Demander une expertise complémentaire
+      </a>
+      <button type="button" class="btn btn-success btn-lg btn-block" onclick="display_send();">
+        Donner l'avis d'expertise
+      </button>
+    </div>
+
+    <!-- Demande complement infos -->
+    <form action="{% url 'exams:mark_incomplete' req.pk %}" method='POST'>
+      {% csrf_token %}
+      <div id="additional_infos">
+        <hr style="margin: 4em" />
+        {% csrf_token %}
+        <div class="card telefile-card">
+          <div class="card-header">
+            Commentaire envoyer avec la demande
+          </div>
+          <div class="card-body telefile-card-pd0">
+            <textarea name="text_expert" class="form-control" id="exampleFormControlTextarea1" rows="6"
+              placeholder="Je vois que cette demande nécessite plus informations car ... comme ..."></textarea>
+          </div>
+        </div>
+        <!-- Send-Cancel Buttons -->
+        <div class="send-cancel">
+          <button type="button" class="btn btn-primary btn-lg btn-send" data-toggle="modal" data-target="#additionalInfosModal">
+            <i class="fa fa-question fa-right-margin"></i>
+            Envoyer la demande des informations complementaire
+          </button>
+          <a href="{% url 'pages:telefile' req.pk %}" class="btn btn-warning btn-lg btn-cancel">
+            Annuler
+          </a>
+          <!-- Modal -->
+          <div class="modal fade" id="additionalInfosModal" tabindex="-1" role="dialog" aria-labelledby="additionalInfosModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="additionalInfosModalLabel">
+                    Confirmer l'envoi de la demande
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Vous ne pouvez pas modifier ou annuler la demande des informations complémentaire en cas d'envoi.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                  <button type="submit" class="btn btn-primary">
+                    Confirmer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+    <!-- Send Result -->
+    <form action="{% url 'pages:send_rapport' req.pk %}" method="POST" enctype='multipart/form-data'>
+      <div id="send-result">
+        <hr style="margin: 4em" />
+        {% csrf_token %}
+        <div class="card telefile-card">
+          <div class="card-header">
+            Mon Rapport:
+          </div>
+          <div class="card-body telefile-card-pd0">
+            <textarea name="text_expert" class="form-control" id="exampleFormControlTextarea1" rows="6"
+              placeholder="Après l'analyse de cette demande je conclu que ..."></textarea>
+          </div>
+        </div>
+        <!-- Files -->
+        <div class="form-group">
+          <div class="custom-file">
+            <input name="files" type="file" class="custom-file-input" id="customFileLangHTML" multiple>
+            <label class="custom-file-label" for="customFileLangHTML" data-browse="Fichiers">
+              Fichiers à joindre (facultatif)
+            </label>
+          </div>
+        </div>
+        <!-- Send-Cancel Buttons -->
+        <div class="send-cancel">
+          <button type="button" class="btn btn-success btn-lg btn-send" data-toggle="modal" data-target="#sendResponseModal">
+            <i class="fa fa-paper-plane fa-right-margin"></i>
+            Envoyer le rapport
+          </button>
+          <a href="{% url 'pages:telefile' req.pk %}" class="btn btn-warning btn-lg btn-cancel">
+            Annuler
+          </a>
+          <!-- Modal -->
+          <div class="modal fade" id="sendResponseModal" tabindex="-1" role="dialog" aria-labelledby="sendResponseModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="sendResponseModalLabel">
+                    Confirmer l'envoi du rapport
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Vous ne pouvez pas modifier le rapport apres l'envoi.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                  <button type="submit" class="btn btn-success">
+                    <i class="fa fa-paper-plane fa-right-margin"></i>
+                    Envoyer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+  {% endblock %}

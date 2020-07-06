@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Connexion {% endblock %}
+
+{% block body %}
+<div class="row justify-content-center" style="margin: 3em 0">
+    <div class="col-md-6">
+    <div class="card">
+    <article class="card-body">
+
+    <!-- Alert -->
+    {% include 'partials/_alerts.html' %}
+
+    <form action="{% url 'accounts:login' %}" method="POST">
+        {% csrf_token %}
+        <!-- Email -->
+        <div class="form-group">
+            <label>Adresse mail</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-at"></i>
+                    </div>
+                </div>
+                <input name="email" type="email" class="form-control">
+            </div>
+        </div>
+        <!-- Password -->
+        <div class="form-group">
+            <label>Mot de passe</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-key"></i>
+                    </div>
+                </div>
+                <input name="password" type="password" class="form-control" id="password-field">
+                <div style="margin: auto 0.5em">
+                    <i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword()"></i>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block btn-register-register">
+                Connexion
+            </button>
+        </div>                                        
+    </form>
+    </article>
+    </div>
+    </div>
+    
+    </div>
+    </div> 
+{% endblock %}

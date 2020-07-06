@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+
+{% block title %} Detail de la demande complete: {{ req.pk }} {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <div class="col-9" style="margin: 2em 0;">
+    <h3 class="file-header">
+      Detail de la Demande d'avis d'expertise
+    </h3>
+    <br/>
+
+    <!-- Patient Card -->
+    <div class="card telefile-card">
+      <div class="card-header telefile-card-pd0">
+        <table class="table table-borderless telefile-table-brdless">
+          <tbody>
+            <tr>
+              <td>Patient:</td>
+              <td>{{ req.patient_id | get_fullname }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-body telefile-card-pd0">
+        <table class="table telefile-card-mrg0">
+          <tbody>
+            <tr>
+              <th scope="row">Date de l'examen:</th>
+              <td>{{ req.exam_date }}</td>
+            </tr>
+            <tr>
+              <th scope="row">CIN:</th>
+              <td>{{ req.patient_id.cin }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Sexe:</th>
+              <td>{{ req.patient_id.get_gender_display }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Né(e) le:</th>
+              <td>{{ req.patient_id.birthdate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Description Card -->
+    <div class="card telefile-card">
+      <div class="card-header">
+        Ma Description
+
+        <!-- Urgent Badge -->
+        {% if req.is_urgent %}
+        <span class="badge badge-danger badge-urgent">
+          <i class="fa fa-exclamation-triangle fa-right-margin"></i>
+          Urgent
+        </span>
+        {% endif %}
+
+      </div>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <h5 style="margin-bottom: 1em;">
+            {{ req.subject }}
+          </h5>
+          <hr/>
+          <pre class="descriptions">{{ req.text_doctor }}</pre>
+          <footer class="blockquote-footer">{{ req.create_date }}</footer>
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- My Documents Card -->
+    {% if doctor_documents %}
+    <div class="card telefile-card">
+      <div class="card-header">
+        Mes Documents Joints
+      </div>
+      <div class="card-body telefile-card-pd0">
+        <table class="table telefile-card-mrg0">
+          <tbody>
+            {% for document in doctor_documents %}
+            <tr>
+              <th>
+                <a class="my-access-link" href="/media/{{ document.file}}">
+                  <i class="fas fa-file-alt fa-right-margin"></i>
+                  {{ document.name }}
+                </a>
+              </th>
+              <td>
+                <a href="/media/{{ document.file }}" download><i class="fas fa-download"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <hr style="margin: 4em;"/>
+
+    <!-- Expert Card -->
+    <div class="card telefile-card">
+      <div class="card-header telefile-card-pd0">
+        <table class="table table-borderless telefile-table-brdless">
+          <tbody>
+            <tr>
+              <td>Expert:</td>
+              <td>
+                <a href="{% url 'pages:doctor' req.expert_id.pk %}" class="link-no-decoration">{{ req.expert_id | get_docname }}</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-body telefile-card-pd0">
+        <table class="table telefile-card-mrg0">
+          <tbody>
+            <tr>
+              <th scope="row">Spécialité:</th>
+              <td>{{ req.expert_id.speciality }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Etablissement:</th>
+              <td>{{ req.expert_id.institution }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Expert Description Card -->
+    <div class="card telefile-card">
+      <div class="card-header">
+        L'avis de l'expert:
+      </div>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <pre class="descriptions">{{ req.text_expert }}</pre>
+          <footer class="blockquote-footer">{{ req.solve_date }}</footer>
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- Expert Documents Card -->
+    {% if expert_documents %}
+    <div class="card telefile-card">
+      <div class="card-header">
+        Expert Documents Joints
+      </div>
+      <div class="card-body telefile-card-pd0">
+        <table class="table telefile-card-mrg0">
+          <tbody>
+            {% for document in expert_documents %}
+            <tr>
+              <th>
+                <a class="my-access-link" href="/media/{{ document.file}}">
+                  <i class="fas fa-file-alt fa-right-margin"></i>
+                  {{ document.name }}
+                </a>
+              </th>
+              <td>
+                <a href="/media/{{ document.file }}" download><i class="fas fa-download"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Show PDF -->
+    <div style="margin: 3em">
+      <a href="{% url 'exams:get_request_pdf' req.pk %}" class="btn btn-info btn-lg btn-block">
+        <i class="fa fa-file-pdf fa-right-margin"></i>
+        Afficher cette demande en format PDF
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

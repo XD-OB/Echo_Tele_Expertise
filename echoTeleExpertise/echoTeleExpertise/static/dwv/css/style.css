@@ -1,0 +1,51 @@
+html, body {
+    height: 100%;
+}
+
+#dwv { height: 90%; }
+
+/* Layers */
+.layerContainer {
+    position: relative; padding: 0;
+    margin: auto; text-align: center; }
+.imageLayer {
+    position: absolute;
+    left: 0px; }
+
+/* drag&drop */
+.dropBox {}
+.dropBoxBorder {
+    margin: 20px auto;
+    border: 5px dashed #27496D; }
+.dropBoxBorder.hover {
+    margin: 20px auto;
+    border: 5px dashed #00909E; }
+
+.legend {
+  text-align: center;
+  font-size: 8pt;
+  margin: 1em;
+}
+.legend a {
+    color: #FFF;
+}
+
+/* toolbar */
+button {
+    margin: 5px; padding: 10px 10px;
+    border: 0 none; border-radius: 4px;
+    font-size: 14px; font-weight: 600;
+    color: #fff; background-color: #00909E; }
+button:hover { background-color: #009990; }
+button:disabled { color: #FFF; }
+.toolbar { font: 14px arial, sans-serif; margin-bottom: 5px; text-align: center; }
+.wl-button, .reset-button { margin-right: 5px; }
+
+select {
+  margin: 5px; padding: 10px 10px;
+  border: 0 none; border-radius: 4px;
+  font-size: 14px; font-weight: 600;
+  color: #fff; background-color: #00909E;
+  text-align-last: center;}
+select:hover { background-color: #009990; }
+select:disabled { color: #FFF; }

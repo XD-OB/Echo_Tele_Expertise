@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+{% load humanize %}
+
+{% block title %} Mes notifications {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <div class="col-9" style="margin: 2em 0;">
+
+    <!-- Infos -->
+    <div class="card notifications-summary-card">
+      <div class="card-body notifications-summary-card-body">
+        <h5 class="card-title">Bonjour <strong>{{ user | get_docname }}</strong></h5>
+        <!-- Mark All the notifications visited -->
+        {% if notifications.len > 0 %}
+        <p class="card-text">
+          Vous avez <span class="notifications-news-nbr">{{ notifications.len }}</span> nouvelles notifications.
+        </p>
+        <form action="{% url 'news' %}" method='POST'>
+          {% csrf_token %}
+          <button type="submit" class="btn btn-info">
+            <i class="fa fa-check-double fa-right-margin"></i>
+            Marquer tous lu
+          </button>
+        </form>
+        {% else %}
+        <p class="card-text">
+          Vous n'avez aucune nouvelles notifications.
+        </p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div>
+      {% if notifications %}
+      {% for notif in notifications.complet %}
+      <!-- News -->
+      {% if notif.is_close == False %}
+      {% if notif.is_incomplete == False %}
+      {% if notif.expert_id == user %}
+      <!-- the new telefiles-->
+
+      <div {% if notif.is_urgent %} class="alert alert-danger alert-dismissible fade show" {% else %}
+        class="alert alert-info alert-dismissible fade show" {% endif %} role="alert">
+        <div class="media notification-media">
+          <img class="align-self-center mr-3 rounded-circle notification-big-img" src="{{ notif.doctor_id.avatar.url }}"
+            alt="doctor image">
+          <a class="notification-link" href="{% url 'pages:telefile' notif.pk %}">
+            <div class="media-body">
+              <div class="notification-infos">
+                <span class="notification-owner-name">{{ notif.doctor_id | get_docname }}</span>&nbsp;
+                 a besoin de votre avis d'expertise.
+              </div>
+              <div>
+                {% if notif.is_urgent %}
+                <i class="fa fa-exclamation-triangle fa-right-margin" style="color:#cf0000; font-size: 0.7em"></i>
+                <small>Urgent</small>
+                {% endif %}
+              </div>
+              <small>{{ notif.notification_date | naturaltime }}</small>
+            </div>
+          </a>
+          <!-- - Destroy Button - -->
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      {% else %}
+      <!-- The Experts Vues -->
+
+      <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        <div class="media notification-media">
+          <img class="align-self-center mr-3 rounded-circle notification-img" src="{{ notif.expert_id.avatar.url }}"
+            alt="profile image">
+          <a class="notification-link" href="{% url 'exams:request_detail' notif.pk %}"></a>
+          <div class="media-body">
+            <div class="notification-infos">
+              <span class="notification-owner-name">{{ notif.expert_id | get_docname }}</span>&nbsp;
+              a vu votre demande.
+            </div>
+            <div>
+              <i class="fa fa-search fa-right-margin" style="color:green; font-size: 0.7em"></i>
+              <small>Vu</small>
+            </div>
+            <small>{{ notif.notification_date | naturaltime }}</small>
+          </div>
+          </a>
+          <!-- - Destroy Button - -->
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      {% endif %}
+
+      {% else %}
+      <!-- the new incomplete requests-->
+
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <div class="media notification-media">
+          <img class="align-self-center mr-3 rounded-circle notification-big-img" src="{{ notif.expert_id.avatar.url }}"
+            alt="profile image">
+          <a class="notification-link" href="{% url 'exams:request_detail' notif.pk %}">
+            <div class="media-body">
+              <div class="notification-infos">
+                <span class="notification-owner-name">{{ notif.expert_id | get_docname }}</span>&nbsp;
+                a besoin de plus d'informations, veuillez ajouter des informations complémentaire.
+              </div>
+              <div>
+                <i class="fa fa-redo fa-right-margin" style="color:#142850; font-size: 0.7em"></i>
+                <small>Incomplet</small>
+              </div>
+              <small>{{ notif.notification_date | naturaltime }}</small>
+            </div>
+          </a>
+          <!-- - Destroy Button - -->
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      {% endif %}
+      {% else %}
+      <!-- the new solved requests -->
+
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="media notification-media">
+          <img class="align-self-center mr-3 rounded-circle notification-big-img" src="{{ notif.expert_id.avatar.url }}"
+            alt="profile image">
+          <a class="notification-link" href="{% url 'exams:request_solved_detail' notif.pk %}">
+            <div class="media-body">
+              <div class="notification-infos">
+                <span class="notification-owner-name">{{ notif.expert_id | get_docname }}</span>&nbsp;
+                a envoyé son avis d'expertise.
+              </div>
+              <div>
+                <i class="fa fa-check-circle fa-right-margin" style="color:green; font-size: 0.8em"></i>
+                <small>Terminer</small>
+              </div>
+              <small>{{ notif.notification_date | naturaltime }}</small>
+            </div>
+          </a>
+          <!-- - Destroy Button - -->
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      {% endif %}
+      {% endfor %}
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        Vous n'avez aucune notification.
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

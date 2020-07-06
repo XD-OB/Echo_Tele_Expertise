@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %} List des patients {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+  <!-- Side Nav -->
+  {% include 'pages/partials/_sideNav.html' %}
+
+  <div class="col-9" style="margin: 2em 0;">
+
+    <!-- Alert -->
+    {% include 'partials/_alerts.html' %}
+
+    <!-- Search Area -->
+    <form action="{% url 'pages:list_patients' %}">
+    <div class="form-row">
+      <!-- Name -->
+      <div class="col-md-4 mb-3">
+        <label class="sr-only">Nom et Prénom</label>
+        <input type="text" name="search_name" class="form-control" placeholder="Nom ou Prénom"
+          value="{{ values.search_name }}">
+      </div>
+      <!-- CIN -->
+      <div class="col-md-2 mb-3">
+        <label class="sr-only">C.I.N</label>
+        <input type="text" name="search_cin" class="form-control" placeholder="C.I.N"
+          value="{{ values.search_cin }}">
+      </div>
+      <!-- Gender -->
+      <div class="col-md-3 mb-3">
+        <label class="sr-only">Sexe</label>
+        <select name="search_gender" class="form-control">
+          <option selected="true" value="">Sexe</option>
+          <option value="M"
+            {% if values.search_gender == 'M' %}
+              selected
+            {% endif %}
+          >
+            Homme
+          </option>
+          <option value="F"
+            {% if values.search_gender == 'F' %}
+              selected
+            {% endif %}
+          >
+            Femme
+          </option>
+        </select>
+      </div>
+      <!-- Start search button -->
+      <div class="col-md-3 mb-3 search-btn">
+        <button class="btn btn-info" type="submit">
+          <i class="fa fa-right-margin fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  {% if relations %}
+
+    <small class="small-info">
+      <i class="fa fa-info-circle"></i>
+      Appuyer sur le CIN pour voir les détails.
+    </small>
+
+    <table class="table table-striped" style="margin-top: 2em;">
+      <thead>
+        <tr>
+          <th scope="col">C.I.N</th>
+          <th scope="col">Nom du Patient</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for relation in relations %}
+        <tr>
+          <td>
+            <a href="{% url 'patients:patient' relation.patient_id.pk %}" style="text-decoration: none;">
+              {{ relation.patient_id.cin }}
+            </a>
+          </td>
+          <td>{{ relation.patient_id.first_name }} {{ relation.patient_id.last_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    {% if relations.has_other_pages %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <!-- Previous Pagination Button -->
+        {% if relations.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ relations.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+        <!-- all elements show -->
+        {% for i in relations.paginator.page_range %}
+        {% if relations.number == i %}
+        <li class="page-item active">
+          <a class="page-link" href="">{{ i }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <!-- Next Pagination Button -->
+        {% if relations.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ relations.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span> </a>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-info" role="alert">
+      Vous n avez aucun patient enregister dans la plateforme!
+    </div>
+    {% endif %}
+    <!-- Button -->
+    <a href="{% url 'patients:add_patient' %}" class="btn btn-info btn-lg btn-block" style="margin-top: 2em">
+      <i class="fa fa-plus fa-right-margin"></i>
+      Ajouter un nouvaux patient
+    </a>
+  </div>
+</div>
+{% endblock %}

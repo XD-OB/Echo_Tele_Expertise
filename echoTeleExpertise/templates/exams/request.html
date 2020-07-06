@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load myconvertions %}
+{% load humanize %}
+
+{% block title %} Detail de la demande {% endblock %}
+
+{% block body %}
+<div class="row" style="width:100vw">
+    <!-- Side Nav -->
+    {% include 'pages/partials/_sideNav.html' %}
+
+    <div class="col-9" style="margin: 2em 0;">
+
+        <!-- Alert -->
+        {% include 'partials/_alerts.html' %}
+
+        <h3 class="file-header">
+          Demande d'avis d'expertise
+        </h3>
+        <br/>
+
+          <!-- Expert Card -->
+          <div class="card telefile-card">
+            <div class="card-header telefile-card-pd0">
+              <table class="table table-borderless telefile-table-brdless">
+                <tbody>
+                  <tr>
+                    <td>Expert:</td>
+                    <td>{{ req.expert_id | get_docname }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  <tr>
+                    <th scope="row">Spécialité:</th>
+                    <td>{{ req.expert_id.speciality }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Etablissement:</th>
+                    <td>{{ req.expert_id.institution }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Patient Card -->
+          <div class="card telefile-card">
+            <div class="card-header telefile-card-pd0">
+              <table class="table table-borderless telefile-table-brdless">
+                <tbody>
+                  <tr>
+                    <td>Patient:</td>
+                    <td>{{ req.patient_id | get_fullname }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  <tr>
+                    <th scope="row">Date de l'examen:</th>
+                    <td>{{ req.exam_date }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">CIN:</th>
+                    <td>{{ req.patient_id.cin }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Sexe:</th>
+                    <td>{{ req.patient_id.get_gender_display }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Né(e) le:</th>
+                    <td>{{ req.patient_id.birthdate }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Description Card -->
+          <div class="card telefile-card">
+            <div class="card-header">
+              <span>Description</span>
+              
+              <!-- Badges -->
+              <!-- - Urgent -->
+              {% if req.is_urgent %}
+              <span class="badge badge-danger badge-urgent">
+                <i class="fa fa-exclamation-triangle fa-right-margin"></i>
+                Urgent
+              </span>
+              {% endif %}
+              <!-- - Incomplete -->
+              {% if req.is_incomplete %}
+              <span class="badge badge-warning badge-urgent">
+                <i class="fa fa-info-circle fa-right-margin"></i>
+                Incomplete
+              </span>
+              {% endif %}
+
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <h5 style="margin-bottom: 1em;">
+                  {{ req.subject }}
+                </h5>
+                <hr/>
+                <pre class="descriptions">{{ req.text_doctor }}</pre>
+                <footer class="blockquote-footer">{{ req.create_date | naturaltime }}</footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <!-- Document Card -->
+          {% if documents %}
+          <div class="card telefile-card">
+            <div class="card-header">
+              Documents Joints
+            </div>   
+            <div class="card-body telefile-card-pd0">
+              <table class="table telefile-card-mrg0">
+                <tbody>
+                  {% for document in documents %}
+                  <tr>
+                    <th>
+                      <a class="my-access-link" href="/media/{{ document.file}}">
+                        <i class="fas fa-file-alt fa-right-margin"></i>
+                        {{ document.name }}
+                      </a>
+                    </th>
+                    <td>
+                      <a href="/media/{{ document.file }}" download><i class="fas fa-download"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+
+          <div id="show-incomplete-result">
+            <!-- Button: Add Complements infos -->
+            {% if req.is_incomplete %}
+            {% if req.text_expert != '' %}
+              <!-- The comment send with the incomplet mark -->
+              <!-- Description Card -->
+              <div class="card telefile-card">
+                <div class="card-header">
+                  Commentaire envoyer avec la demande des informations complémentaire
+                </div>
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <pre class="descriptions">{{ req.text_expert }}</pre>
+                    <footer class="blockquote-footer">{{ req.notification_date | naturaltime }}</footer>
+                  </blockquote>
+                </div>
+              </div>
+            {%endif%}
+              <!-- Button -->
+              <button type="button"class="btn btn-primary btn-lg btn-block" onclick="display_complete_request()">
+                <i class="fa fa-plus fa-right-margin"></i>
+                Ajouter les informations complémentaires
+              </button>
+            {% endif %}
+          </div>
+
+          <div id="complete-request">
+            <hr style="margin: 2em"/>
+            <form action="{% url 'exams:request_detail' req.pk %}" method='POST' enctype='multipart/form-data'>
+              {% csrf_token %}
+              <div class="card">
+                <header class="card-header">
+                  <span>Nouvelle Description</span>
+                </header>
+                <article class="card-body">
+                  <!-- Subject of the Request -->
+                  <div class="form-group">
+                    <label>Objet de la demande</label>
+                    <textarea name="subject" class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+                  </div>
+                  <!-- Description -->
+                  <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="9" required></textarea>
+                  </div>
+                  <!-- Files -->
+                  <div class="form-group">
+                    <div class="custom-file">
+                      <input name="new_files" type="file" class="custom-file-input" id="customFileLangHTML" multiple>
+                      <label class="custom-file-label" for="customFileLangHTML" data-browse="Fichiers">
+                        Nouveaux fichiers à joindre
+                      </label>
+                    </div>
+                  </div>
+                  <!-- The request is urgent -->
+                  <div class="form-group" style="text-align:center">
+                    <div class="form-check">
+                      <input type="checkbox" name="is_urgent" value="URGENT" id="defaultCheck1" class="form-check-input" style="width: 1em; height:1em;">
+                      &nbsp;
+                      <label class="form-check-label" for="defaultCheck1" style="color:red; font-weight: 600;">
+                        Cette demande est Urgente !
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Send-Cancel Buttons -->
+                <div class="send-cancel">
+                  <button type="button" class="btn btn-success btn-lg btn-send" data-toggle="modal" data-target="#sendCompleteModal">
+                    <i class="fa fa-paper-plane fa-right-margin"></i>
+                    Envoyer les informations complémentaire
+                  </button>
+                  <a href="{% url 'exams:request_detail' req.pk %}" class="btn btn-warning btn-lg btn-cancel">
+                    Annuler
+                  </a>
+                  <!-- Modal -->
+                  <div class="modal fade" id="sendCompleteModal" tabindex="-1" role="dialog" aria-labelledby="sendCompleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="sendResponseModalLabel">
+                            Confirmer l'envoi des informations complémentaire
+                          </h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Vous ne pouvez pas modifier ou supprimer les informations complémentaires après l'envoi. Les anciennes et cette nouvelle description seront visible dans cette demande.
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                          <button type="submit" class="btn btn-success">
+                            <i class="fa fa-paper-plane fa-right-margin"></i>
+                            Envoyer
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </form>
+          </div>
+
+    </div>
+</div>
+{% endblock %}

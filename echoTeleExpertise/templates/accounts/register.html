@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+
+{% block title %} Inscription {% endblock %}
+
+{% block body %}
+<div class="row justify-content-center" style="margin: 3em 0">
+    <div class="col-md-9">
+    <div class="card">
+    <header class="card-header">
+        <h4 class="card-title mt-2">Inscription</h4>
+        Bonjour! veuillez remplir ces informations pour créer votre profile
+    </header>
+    <article class="card-body">
+    
+    <!-- Alert -->
+    {% include 'partials/_alerts.html' %}
+
+
+    <form action="{% url 'accounts:register' %}" method="POST">
+        {% csrf_token %}
+        <!--- Fullname Form --->
+        <div class="col px-0">
+            <!--- Last Name Validation Error --->
+            {% if form.last_name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                    {{ form.last_name.errors | striptags }}
+                </div>
+            {% endif %}
+            <!--- First Name Validation Error --->
+            {% if form.first_name.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.first_name.errors | striptags }}
+            </div>
+            {% endif %}
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>Nom </label>   
+                    <input name="last_name" type="text" class="form-control"
+                        value="{{ values.last_name }}"
+                        {% if form.last_name.errors %}
+                            style="border-color:red; color: red;"
+                        {% endif %}
+                    >
+                </div>
+                <div class="col form-group">
+                    <label>Prénom</label>
+                    <input name="first_name" type="text" class="form-control"
+                        value="{{ values.first_name }}"
+                        {% if form.first_name.errors %}
+                            style="border-color:red;"
+                        {% endif %}
+                    >
+                </div>
+            </div>
+        </div>
+        <!-- Speciality -->
+        <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.speciality.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.speciality.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <label>Specialité</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-user-md" style="width: 1em"></i>
+                    </div>
+                </div>
+                <input name="speciality" type="text" class="form-control"
+                    value="{{ values.speciality }}"
+                    {% if form.speciality.errors %}
+                        style="border-color:red;"
+                    {% endif %}
+                >
+            </div>
+        </div>
+        <!-- Institution -->
+        <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.institution.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.institution.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <label>Etablissement</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-building" style="width: 1em"></i>
+                    </div>
+                </div>
+                <input name="institution" type="text" class="form-control"
+                    value="{{ values.institution }}"
+                    {% if form.institution.errors %}
+                        style="border-color:red;"
+                    {% endif %}
+                >
+            </div>
+        </div>
+        <!-- Téléphone -->
+        <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.phone.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.phone.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <label>Téléphone</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-mobile-alt" style="width: 1em"></i>
+                    </div>
+                </div>
+                <input name="phone" type="text" class="form-control"
+                    value="{{ values.phone }}"
+                    {% if form.phone.errors %}
+                        style="border-color:red;"
+                    {% endif %}
+                >
+            </div>
+        </div>
+        <!-- CIN -->
+        <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.cin.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.cin.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <label>C.I.N</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-id-card"></i>
+                    </div>
+                </div>
+                <input name="cin" type="text" class="form-control"
+                    value="{{ values.cin }}"
+                    {% if form.cin.errors %}
+                        style="border-color:red;"
+                    {% endif %}
+                >
+            </div>
+        </div>
+        <!-- Adresse Professionnelle -->
+        <div class="col px-0">
+            <!--- Adresse Validation Error --->
+            {% if form.address.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                    {{ form.address.errors | striptags }}
+                </div>
+            {% endif %}
+            <!--- City Validation Error --->
+            {% if form.city.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.city.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label>Adresse professionnelle</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fa fa-map-marker-alt"></i>
+                            </div>
+                        </div>
+                        <input name="address" type="text" class="form-control"
+                            value="{{ values.address }}"
+                            {% if form.address.errors %}
+                                style="border-color:red;"
+                            {% endif %}
+                        >
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Ville</label>
+                    <input name="city" type="text" class="form-control"
+                        value="{{ values.city }}"
+                        {% if form.city.errors %}
+                            style="border-color:red;"
+                        {% endif %}
+                    >
+                </div>
+            </div>
+        </div>
+        <!-- Email -->
+        <div class="form-group">
+            <!--- Validation Error --->
+            {% if form.email.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.email.errors | striptags }}
+            </div>
+            {% endif %}
+            <!--- Form --->
+            <label>Adresse mail</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-at"></i>
+                    </div>
+                </div>
+                <input name="email" type="email" class="form-control"
+                    value="{{ values.email }}"
+                    {% if form.email.errors %}
+                        style="border-color:red;"
+                    {% endif %}
+                >
+            </div>
+        </div>
+        <!-- Password -->
+        <div class="form-group">
+            <!--- Password Validation Error --->
+            {% if form.password.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle fa-right-margin"></i>
+                {{ form.password.errors | striptags }}
+            </div>
+            {% endif %}
+            <label>Mot de passe</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-key"></i>
+                    </div>
+                </div>
+                <input name="password" type="password" class="form-control" id="password-field">
+                <div style="margin: auto 0.5em">
+                    <i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword()"></i>
+                </div>
+            </div>
+            <small class="form-text text-muted">Veuillez saisir un mot de passe fort.</small>
+        </div>
+        <!-- Check Password -->
+        <div class="form-group">
+            <label>Confirmation du mot de passe</label>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-check"></i>
+                    </div>
+                </div>
+                <input name="password2" type="password" class="form-control">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block btn-register-register">
+                S'inscrire
+            </button>
+        </div>
+        <small class="text-muted">
+            En s'inscrivant, vous confirmez que vous acceptez nos conditions d'utilisation et politique de confidentialité.
+        </small>                                          
+    </form>
+    </article>
+    <div class="border-top card-body text-center">
+        Vous avez déjà un compte?
+        <a class="btn btn-outline-success" style="margin-left: 0.5em" href="{% url 'accounts:login' %}">
+            Connexion
+        </a>
+    </div>
+    </div>
+    </div>
+    </div> 
+{% endblock %}

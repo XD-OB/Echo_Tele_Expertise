@@ -1,0 +1,39 @@
+div#header {
+    background-color: #142850;
+    box-shadow: 0 0.15em #a8a7a7;
+    padding: 1em;
+}
+
+div#branding {
+    padding: 0.5em;
+}
+
+.panel-title {
+    font-family: 'Kalam', cursive;
+    font-weight: 600;
+    color: white;
+    margin-left: 0.5em;
+}
+
+.admin-footer {
+    margin-top: 1em;
+    text-align: center;
+    padding: 0.5em;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: #00909E;
+}
+
+div.breadcrumbs {
+    background: #00909E;
+    color: #142850;
+}
+
+div.breadcrumbs a {
+    color: #142850;
+}
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: #142850;
+}
