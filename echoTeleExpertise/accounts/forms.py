@@ -4,8 +4,6 @@ from django import forms
 
 class   RegisterForm(forms.Form):
     email = forms.EmailField(label='Email')
-    password = forms.CharField(label='Mot de passe', max_length=40)
-    password2 = forms.CharField(label='Confirmation du mot de passe', max_length=40)
     first_name = forms.CharField(label='Prénom', max_length=30)
     last_name = forms.CharField(label='Nom', max_length=20)
     speciality = forms.CharField(label='Specialité', max_length=50)

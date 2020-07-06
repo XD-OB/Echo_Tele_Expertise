@@ -29,8 +29,8 @@ def     register(request):
         values = request.POST
         if form.is_valid():
             # Get Informations:
-            password = form.password
-            password2 = form.password2
+            password = request.POST['password']
+            password2 = request.POST['password2']
             cin = form.cleaned_data['cin']
             city = form.cleaned_data['city']
             email = form.cleaned_data['email']

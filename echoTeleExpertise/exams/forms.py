@@ -3,7 +3,6 @@ from patients.models import Patient
 from django import forms
 
 class   RequestForm(forms.Form):
-    patient_id = forms.IntegerField(label="Patient id")
     exam_date = forms.DateField(label="Date d'examen")
     subject = forms.CharField(label='Objet', max_length=50)
     description = forms.CharField(label='Description', max_length=5000)

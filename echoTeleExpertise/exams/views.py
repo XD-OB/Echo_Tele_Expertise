@@ -189,13 +189,17 @@ def     add_request(request):
             # Get infos:
             exam_date = request.POST.get('exam_date', datetime.now())
             is_urgent = request.POST.get('is_urgent', 'NONE')
-            patient_id = form.patient_id
+            patient_id = request.POST['patient_id']
             expert_id = request.POST['expert_id']
             subject = form.cleaned_data['subject']
             description = form.cleaned_data['description']
             # Check if the user choose an expert
             if expert_id == '':
                 messages.error(request, "Veuillez selectionner un expert!")
+                return redirect('exams:add_request')
+            # Check if the user choose an expert
+            if patient_id == '':
+                messages.error(request, "Veuillez selectionner un patient!")
                 return redirect('exams:add_request')
             # Search the instance Expert
             try:
