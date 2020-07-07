@@ -28,8 +28,9 @@ Elle est detailler dans le pdf et le XLSX dans le dossier Extras
 - Installer PostgresSQL
 - (Si vous ete sous le systeme d'exploitation Windows: vous devriez Telecharger Python et PostgresSQL puis les installer)
 - it clone the project from the git or i will send it to you.
-- Dans le dossier telecharger couper media
-- coller media dans echoTeleExpertise (les fichiers par default sont dans ce fichier)
+- Dans echoTeleExpertise creer un dossier media
+- Dans media creer 2 dossiers: avatars  documents
+- dans avatars coller le fichier dans extras: empty_profile.jpg
 - Dans le terminal ou le CMD dans le dossier de l'app:
 - pip install pipenv
 - pipenv shell
