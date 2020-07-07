@@ -45,6 +45,8 @@ Elle est detailler dans le pdf et le XLSX dans le dossier Extras
 ==> Dans cette étape le site est lancer dans: 127.0.0.1:8000 (Mentionner dans le msg)
 ## Lancer l'app de dwv:
 Dans le Dossier de l'app ouvrir un autre terminal (laisser le dernier terminal running :) ).
+- Download & Install NodeJs
+- Download & Install Yarn
 - cd ete-dwv
 - yarn install
 - yarn start
@@ -55,6 +57,7 @@ Dans le Dossier de l'app ouvrir un autre terminal (laisser le dernier terminal r
 ## Dans le quotidien (toujours XD)
 ### Lancer l'app principale
 Dans le dossier de l'app telecharger la premiere fois
+- pipenv shell
 - cd echoTeleExpertise
 - python manage.py runserver
 ==> L'app principale est lancer dans 127.0.0.1:8000 (Mentionner dans le msg)
