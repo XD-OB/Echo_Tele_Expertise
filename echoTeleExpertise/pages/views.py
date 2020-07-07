@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from echoTeleExpertise.consts import paginator_max, ete_email
+from mylib.names import str_docname, str_fullname
 from mylib.notifications import get_summary_notifs
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator

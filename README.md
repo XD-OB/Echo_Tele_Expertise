@@ -33,10 +33,6 @@ Le visionneur dicom utiliser:
 - yarn install
 - yarn start
 
-## Db Super User:
-- 'USER': 'postgres',
-- 'PASSWORD': 'ITGod2020@'
-
 # Apps:
 ## core:
 Cette app contient le code que j'ai utiliser pour étendre le modele de l'utilisateur

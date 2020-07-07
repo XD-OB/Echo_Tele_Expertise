@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load myconvertions %}
 
 {% block title %} Partager le télé-dossier {{ req.pk }} {% endblock %}
 
@@ -24,7 +25,7 @@
                 <tbody>
                   <tr>
                     <td>Demandeur d'avis:</td>
-                    <td>Dr {{ req.doctor_id.last_name }} {{ req.doctor_id.first_name }}</td>
+                    <td>{{ req.doctor_id | get_docname }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -57,7 +58,7 @@
                 <tbody>
                   <tr>
                     <td>Patient:</td>
-                    <td>{{ req.patient_id.last_name }} {{ req.patient_id.first_name }}</td>
+                    <td>{{ req.patient_id | get_fullname }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -71,7 +72,7 @@
                   </tr>
                   <tr>
                     <th scope="row">Sexe:</th>
-                    <td>{{ req.patient_id.gender }}</td>
+                    <td>{{ req.patient_id.get_gender_display }}</td>
                   </tr>
                   <tr>
                     <th scope="row">Né(e) le:</th>
@@ -179,7 +180,7 @@
                       <option selected="true" value="">Les médecins</option>
                       {% for expert in experts %}
                         <option value="{{ expert.pk }}">
-                          {{ expert.last_name }} {{ expert.first_name }}
+                          {{ expert | get_fullname }}
                         </option>
                       {% endfor %}
                     </select>
