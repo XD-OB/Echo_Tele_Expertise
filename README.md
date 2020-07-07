@@ -8,9 +8,9 @@ Des imprime ecran de l'app:
 
 ![Screen Shot 1](https://github.com/XD-OB/Echo_Tele_Expertise/blob/master/extras/ete_home.JPG)
 
-![Screen Shot 2](https://github.com/XD-OB/Echo_Tele_Expertise/tree/master/ete-dwv/extras/ete_screen2.JPG)
+![Screen Shot 2](https://github.com/XD-OB/Echo_Tele_Expertise/blob/master/extras/ete_screen2.JPG)
 
-![Screen Shot 3](https://github.com/XD-OB/Echo_Tele_Expertise/tree/master/ete-dwv/extras/ete_screen3.JPG)
+![Screen Shot 3](https://github.com/XD-OB/Echo_Tele_Expertise/blob/master/extras/ete_screen3.JPG)
 
 # Structure de la base de données
 Elle est detailler dans le pdf et le XLSX dans le dossier Extras
