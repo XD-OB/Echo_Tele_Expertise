@@ -6,7 +6,7 @@ from .models import Request, Document
 from core.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from .forms import PatientRequestForm, RequestForm
+from .forms import RequestForm
 from django.template.loader import get_template
 from echoTeleExpertise.consts import ete_email
 from django.contrib import messages
@@ -382,22 +382,26 @@ def     patient_request(request, patient_id):
     # Search the Patient if not find display 404 Error
     patient = get_object_or_404(Patient, pk=patient_id)
     if request.method == 'POST':
-        form = PatientRequestForm(request.POST)
+        form = RequestForm(request.POST)
         # the old values of the request 
         values = request.POST
         if form.is_valid():      
             # Get infos:
             exam_date = request.POST.get('exam_date', datetime.now())
             is_urgent = request.POST.get('is_urgent', 'NONE')
-            expert_id = form.expert_id
+            expert_id = request.POST['expert_id']
             subject = form.cleaned_data['subject']
             description = form.cleaned_data['description']
+            # Test Expert id:
+            if expert_id == '':
+                messages.error(request, "Veuillez selectionner un expert valid!")
+                return redirect('exams:patient_request', patient_id)
             # Search the instance Expert
             try:
                 expert = User.objects.get(pk=expert_id)
             except User.DoesNotExist:
                 messages.error(request, "Veuillez selectionner un expert valid!")
-                return redirect('exams:patient_request')
+                return redirect('exams:patient_request', patient_id)
             req = Request.objects.create(
                 exam_date=exam_date,
                 patient_id=patient,
@@ -453,9 +457,9 @@ def     patient_request(request, patient_id):
                     fail_silently = True
                 )
             messages.success(request, "La nouvelle demande est envoyé")
-            return redirect('patients:patient')
+            return redirect('pages:list_patients')
     else:
-        form = PatientRequestForm()
+        form = RequestForm()
         values = {}
     users = User.objects.exclude(email=request.user.email).exclude(is_staff=True)
     context = {
