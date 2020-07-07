@@ -35,7 +35,12 @@ Elle est detailler dans le pdf et le XLSX dans le dossier Extras
 - pip install pipenv
 - pipenv shell
 - pipenv install -r requirements.txt
+- Dans pgadmin creer la base de donnée 'etedb'
+- Dans settings.py modifier username & password
 - cd echoTeleExpertise
+- python manage.py makemigrations
+- python manage.py migrate
+- python manage.py createsuperuser
 - python manage.py runserver
 ==> Dans cette étape le site est lancer dans: 127.0.0.1:8000 (Mentionner dans le msg)
 ## Lancer l'app de dwv:
