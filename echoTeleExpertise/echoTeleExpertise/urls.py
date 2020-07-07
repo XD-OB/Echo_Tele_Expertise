@@ -14,4 +14,5 @@ urlpatterns = [
     path('patients/', include('patients.urls', namespace="patients")),
     path('pages/', include('pages.urls', namespace="pages")),
     path('verify_email/<str:hash_code>/', views.activate_account, name="activate_account"),
+    path('change_password/<str:hash_code>/', views.change_password, name="change_password"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

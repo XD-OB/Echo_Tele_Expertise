@@ -1,4 +1,5 @@
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, get_object_or_404, render, redirect
 from mylib.notifications import get_summary_notifs
 from django.http import HttpResponseForbidden
@@ -17,6 +18,13 @@ def     activate_link(request, user):
     The link to activate the account ( string )
     '''
     return  'http://127.0.0.1:8000/verify_email/' + encrypt_val(user.email) + '/'
+
+def     change_password_link(request, user):
+    '''
+    The link to change the password of an account ( string )
+    '''
+    return  'http://127.0.0.1:8000/change_password/' + encrypt_val(user.email) + '/'
+
 
 @ensure_csrf_cookie
 def     register(request):
@@ -100,8 +108,9 @@ def     login(request):
     Login users view
     '''
     if request.method == 'POST':
+        prev_email = request.POST['email']
         # Get user Infos:
-        email = request.POST['email'].lower()
+        email = prev_email.lower()
         password = request.POST['password']
         # Check if the user exist:
         if User.objects.filter(email=email).exists():
@@ -121,8 +130,47 @@ def     login(request):
             messages.error(request, 'Mot de passe incorrect!')
         else:
             messages.error(request, "Cet email n'est pas enregister!")
-        return render(request, 'accounts/login.html', {})
-    return render(request, 'accounts/login.html', {})
+    else:
+        prev_email = None
+    context = {
+        'prev_email': prev_email
+    }
+    return render(request, 'accounts/login.html', context)
+
+
+def     forget_password(request):
+    '''
+    Forget Password, send Reinitialisation email View
+    '''
+    if request.method == 'POST':
+        prev_email = request.POST['email']
+        # Get user Infos:
+        email = prev_email.lower()
+        # Check if the user exist:
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            send_mail(
+                # Subject
+                'Bonjour Dr ' + user.last_name + ' ' + user.first_name,
+                # Message
+                "Si vous n'avez pas envoyer une demande pour changer le mot de passe veuillez ignorer cet eamil.\nPour changer votre mot de passe veuillez entrer ce lien:\n" + change_password_link(request, user) +  "\n\n- Meryem Rkach",
+                # From (Email)
+                ## A variable that contain the ete mail
+                ete_email,
+                # To (Email)
+                [email, ],
+                # If the send fail do not affich any errors
+                fail_silently = False
+            )
+            return render(request, 'accounts/wait_change_password.html', {})
+        else:
+            messages.error(request, "Cet email n'est pas enregister!")
+    else:
+        prev_email = None
+    context = {
+        'prev_email': prev_email
+    }
+    return render(request, 'accounts/forget_password.html', context)
 
 
 def     logout(request):
@@ -136,6 +184,7 @@ def     logout(request):
         return redirect('index')
 
 
+@login_required
 def        edit_profile(request):
     '''
     Edit Profile of the user view
@@ -189,6 +238,7 @@ def        edit_profile(request):
     return render(request, 'accounts/edit_profile.html', context)
 
 
+@login_required
 def        upload_profile_img(request):
     '''
     choose the new profile image:
@@ -201,3 +251,51 @@ def        upload_profile_img(request):
         user.save()
         return redirect('accounts:edit_profile')
     return HttpResponseForbidden('allowed only via POST')
+
+
+@login_required
+def      set_password(request):
+    '''
+    Change password of the account
+    '''
+    if request.method == 'POST':
+        # Get the passwords:
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
+        conf_password = request.POST['conf_password']
+        print(request.user.password)
+        # Check if the old password is correct:
+        if not request.user.check_password(old_password):
+            messages.error(request, "L'ancien mot de passe est incorrect!")
+            return redirect('accounts:set_password')
+        # If the 2 passwords empty
+        if new_password == '' or conf_password == '':
+            messages.error(request, 'Un des champs est Vide!')
+            return redirect('accounts:set_password')
+        # If the 2 passwords match
+        if new_password != conf_password:
+            messages.error(request, 'Les deux mots de passe ne se match pas!')
+            return redirect('accounts:set_password')
+        # Check if the password match requierements:
+        if ((len(new_password) < 8) or (search('[0-9]', new_password) is None) or (search('[A-Z]', new_password) is None)):
+            messages.warning(request, 'Veuillez utilisé un mot de passe fort (conbinaison de chiffres et lettres) avec une longueur qui dépasse 8 caractères!')
+            return redirect('accounts:set_password')
+        # Change the passwords
+        request.user.set_password(new_password)
+        request.user.save()
+        messages.success(request, 'Votre mot de passe a été changer avec succès.')
+        send_mail(
+                # Subject
+                'Bonjour Dr ' + request.user.last_name + ' ' + request.user.first_name,
+                # Message
+                "Votre mot de passe est changer avec succès.\n\n- Meryem Rkach",
+                # From (Email)
+                ## A variable that contain the ete mail
+                ete_email,
+                # To (Email)
+                [request.user.email, ],
+                # If the send fail do not affich any errors
+                fail_silently = False
+            )
+        return redirect('accounts:login')
+    return render(request, 'accounts/set_password.html', {})

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from mylib.crypt import decrypt_val
 from core.models import User
+from re import search
 
 # Home page View:
 def     index(request):
@@ -55,3 +56,33 @@ def      activate_account(request, hash_code):
     user.save()
     messages.success(request, 'Votre email est verifié vous pouvez se connecter à votre compte')
     return render(request, 'accounts/login.html', {})
+
+
+def      change_password(request, hash_code):
+    '''
+    Change password of the account
+    '''
+    decrypted_code = decrypt_val(bytes(hash_code, encoding='utf-8'))
+    user = get_object_or_404(User, email=decrypted_code)
+    if request.POST == 'POST':
+        # Get the passwords:
+        password = request.POST['password']
+        password2 = request.POST['password2']
+        # If the 2 passwords empty
+        if password == '' or password2 == '':
+            messages.error(request, 'Un des champs est Vide!')
+            return redirect('accounts:change_password')
+        # Check if the password match requierements:
+        # If the 2 passwords match
+        if password == password2:
+            if ((len(password) < 8) or (search('[0-9]', password) is None) or (search('[A-Z]', password) is None)):
+                messages.warning(request, 'Veuillez utilisé un mot de passe fort (conbinaison de chiffres et lettres) avec une longueur qui dépasse 8 caractères!')
+                return redirect('accounts:change_password')
+            # Change the passwords
+            user.set_password(password)
+            user.save()
+            messages.success(request, 'Votre mot de passe a été changer avec succès.')
+            
+            return redirect('accounts:login')
+        messages.error(request, 'Les deux mots de passe ne se match pas!')
+    return render(request, 'accounts/change_password.html', {})

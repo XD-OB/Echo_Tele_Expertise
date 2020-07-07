@@ -25,17 +25,23 @@
                                         <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">
                                             Dr {{ user.last_name }} {{ user.first_name }}</h4>
                                         <div class="text-muted"><small>{{ user.email }}</small></div>
+                                        <!-- Edit Image Form -->
+                                        <form id="form-edit-profile_img" action="{% url 'accounts:upload_profile_img' %}" enctype="multipart/form-data" method='POST'>
+                                        {% csrf_token %}
+                                            <div class="mt-2">
+                                                <button type="button" class="btn btn-info"
+                                                    onclick='document.getElementById("profile-img_input").click();'>
+                                                    <i class="fa fa-fw fa-camera fa-right-margin"></i>
+                                                    Changer la photo
+                                                </button>
+                                                <input id="profile-img_input" type="file" name="profile_img" onchange="submit_new_profile_img()"/>
+                                            </div>
+                                        </form>
                                         <div class="mt-2">
-                                            <!-- Edit Image Form -->
-                                            <form id="form-edit-profile_img" action="{% url 'accounts:upload_profile_img' %}" enctype="multipart/form-data" method='POST'>
-                                            {% csrf_token %}
-                                            <button type="button" class="btn btn-info" style="margin-bottom: 2em;"
-                                                onclick='document.getElementById("profile-img_input").click();'>
-                                                <i class="fa fa-fw fa-camera fa-right-margin"></i>
-                                                Changer la photo
-                                            </button> 
-                                            <input id="profile-img_input" type="file" name="profile_img" onchange="submit_new_profile_img()"/>
-                                            </form>
+                                            <a href="{% url 'accounts:set_password' %}" class="btn btn-secondary" style="margin-bottom: 2em;">
+                                                <i class="fa fa-fw fa-key fa-right-margin"></i>
+                                                Changer le mot de passe
+                                            </a>
                                         </div>
                                         <form action="{% url 'accounts:edit_profile' %}" method='POST'>
                                         {% csrf_token %}

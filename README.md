@@ -5,13 +5,53 @@ Il permet l'échange et le partage de données d'imagerie médicale échographiq
 (Meryem Rkach) 
 
 # Technologies utiliser:
-- Backend: Django 3
+- Backend: Django3 (Python3+)
+- FrontEnd: HTML, CSS, Bootstrap4, Javascript, JQuery
 - Base de Données: PostgreSQL (Relationnelle)
+
+# Simple Methode pour lancer l'app:
+## Pour la premiere fois
+### Lancer l'app principale:
+- Installer Python3+
+- Installer pip
+- Installer PostgresSQL
+- (Si vous ete sous le systeme d'exploitation Windows: vous devriez Telecharger Python et PostgresSQL puis les installer)
+- it clone the project from the git or i will send it to you.
+- Dans le dossier telecharger couper media
+- coller media dans echoTeleExpertise (les fichiers par default sont dans ce fichier)
+- Dans le terminal ou le CMD dans le dossier de l'app:
+- pip install pipenv
+- pipenv shell
+- pipenv install -r requirements.txt
+- cd echoTeleExpertise
+- python manage.py runserver
+==> Dans cette étape le site est lancer dans: 127.0.0.1:8000 (Mentionner dans le msg)
+## Lancer l'app de dwv:
+Dans le Dossier de l'app ouvrir un autre terminal (laisser le dernier terminal running :) ).
+- cd ete-dwv
+- yarn install
+- yarn start
+==> Tous est bien :)
+
+
+
+## Dans le quotidien (toujours XD)
+### Lancer l'app principale
+Dans le dossier de l'app telecharger la premiere fois
+- cd echoTeleExpertise
+- python manage.py runserver
+==> L'app principale est lancer dans 127.0.0.1:8000 (Mentionner dans le msg)
+### Lancer l'app de dwv:
+Dans le dossier de l'app telecharger la premiere fois
+- cd ete-dwv
+- yarn start
+==> C'est terminer!
+
 
 # Installation:
 ## dépendances:
-- python 3+
-- pip (or easy_install)
+- installer python 3+
+- installer pip
 Pour assurer l'isolation de l'app d'abord on prépare l'environnement virtuel:
 - install pipenv:   pip install pipenv
 Dans le dossier où vous deposerer le dossier de l'app utiliser la commande suivante pour creer pipfile et demarer le shell en virtuel env
