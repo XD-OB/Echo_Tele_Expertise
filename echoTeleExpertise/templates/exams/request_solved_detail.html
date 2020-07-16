@@ -177,13 +177,46 @@
     </div>
     {% endif %}
 
-    <!-- Show PDF -->
-    <div style="margin: 3em">
-      <a href="{% url 'exams:get_request_pdf' req.pk %}" class="btn btn-info btn-lg btn-block">
-        <i class="fa fa-file-pdf fa-right-margin"></i>
-        Afficher cette demande en format PDF
+    <!-- Verify if the request is paid -->
+    {% if req.is_paid %}
+      <!-- Show PDF -->
+      <div style="margin: 3em">
+        <a href="{% url 'exams:get_request_pdf' req.pk %}" class="btn btn-info btn-lg btn-block">
+          <i class="fa fa-file-pdf fa-right-margin"></i>
+          Afficher cette demande en format PDF
+        </a>
+      </div>
+    {% else %}
+      <a href="{% url 'exams:mark_paid' req.pk %}" class="btn ">
+        
       </a>
-    </div>
+      <button type="button" class="btn btn-warning btn-lg btn-block" data-toggle="modal" data-target="#payRequestModal">
+        <i class="fa fa-money-check-alt fa-right-margin"></i>
+        Payement de l'avis d'expertise
+      </button>
+      <!-- Modal -->
+      <div class="modal fade" id="payRequestModal" tabindex="-1" role="dialog" aria-labelledby="payRequestModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="payRequestModalLabel">
+                Confirmer le payement
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Veuillez verifié que le payement est effectué avant de confirmer.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <a href="{% url 'exams:mark_paid' req.pk %}" class="btn btn-success">Confirmer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
 
   </div>
 </div>

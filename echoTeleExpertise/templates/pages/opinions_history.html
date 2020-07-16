@@ -95,6 +95,7 @@
               <th scope="col">Date d'examen</th>
               <th scope="col">Nom du patient</th>
               <th scope="col">Objet</th>
+              <th scope="col">Payé</th>
             </tr>
           </thead>
           <tbody>
@@ -107,6 +108,15 @@
                   {{ req.subject }}
                 </a>
               </td>
+              {% if req.is_paid %}
+                <td>
+                  <i class="fa fa-check-circle fa-right-margin green-check"></i>
+                </td>
+              {% else %}
+                <td>
+                  <i class="fa fa-times-circle fa-right-margin red-cross"></i>
+                </td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>

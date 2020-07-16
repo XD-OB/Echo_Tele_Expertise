@@ -5,8 +5,9 @@ app_name = 'exams'
 
 urlpatterns = [
     path('add/', views.add_request, name="add_request"),
-    path('solved/<int:req_id>', views.request_solved_detail, name="request_solved_detail"),
+    path('pay/<int:request_id>', views.mark_paid, name="mark_paid"),
     path('done/<int:req_id>', views.opinion_solved_detail, name="opinion_solved_detail"),
+    path('solved/<int:req_id>', views.request_solved_detail, name="request_solved_detail"),
     path('incomplete/<int:request_id>', views.mark_incomplete, name="mark_incomplete"),
     path('patient/<int:patient_id>', views.patient_request, name="patient_request"),
     path('detail/<int:request_id>', views.request_detail, name="request_detail"),

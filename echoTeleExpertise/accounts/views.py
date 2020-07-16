@@ -198,7 +198,7 @@ def        edit_profile(request):
             last_name = form.cleaned_data['last_name']
             first_name = form.cleaned_data['first_name']
             speciality = form.cleaned_data['speciality']
-            institution = form.cleaned_dat['institution']
+            institution = form.cleaned_data['institution']
             biography = form.cleaned_data['biography']
             address = form.cleaned_data['address']
             phone = form.cleaned_data['phone']

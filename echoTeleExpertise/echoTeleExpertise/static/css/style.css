@@ -545,6 +545,14 @@ div.search-btn button {
   color:white;
 }
 
+.green-check{
+  color: green;
+}
+
+.red-cross {
+  color: red;
+}
+
 /****************** Respensive *****************/
 
 @media screen and (max-width: 1100px) {

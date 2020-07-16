@@ -473,10 +473,12 @@ def     patient_request(request, patient_id):
     return render(request, 'exams/patient_request.html', context)
 
 
-# Mark the Request as incomplete
 @login_required
 def     mark_incomplete(request, request_id):
-    # Mark only if the request is made with the POST method
+    '''
+    Mark the request as Incomplet
+    Mark only if the request method is POST !
+    '''
     if request.method == 'POST':
         try:
             req = Request.objects.get(
@@ -513,3 +515,14 @@ def     mark_incomplete(request, request_id):
         messages.success(request, 'Une demande des informations complémentaire est envoyé au Dr ' + req.doctor_id.last_name + ' ' + req.doctor_id.first_name + '.')
         return redirect('pages:telefiles')
     return HttpResponseNotAllowed('Not allowed to go to this page')
+
+
+@login_required
+def     mark_paid(request, request_id):
+    '''
+    Mark the request as Paid
+    '''
+    req = get_object_or_404(Request, pk=request_id)
+    req.is_paid = True
+    req.save()
+    return redirect('exams:request_solved_detail', request_id)

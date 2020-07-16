@@ -16,6 +16,7 @@ class   Request(models.Model):
     text_expert = models.TextField("Description de l'expert", blank=True)
     is_incomplete = models.BooleanField('Des informations complémentaire sont necessaire', default=False)
     is_close = models.BooleanField('Le compte rendu est envoyé', default=False)
+    is_paid = models.BooleanField('Le service est payé', default=False)
     is_doctor_visited = models.BooleanField("Cette demande est vue par l'auteur ", default=False)
     is_expert_visited = models.BooleanField("Cette demande est vue par l'expert", default=False)
     create_date = models.DateTimeField("Date de la demande", auto_now_add=True)
