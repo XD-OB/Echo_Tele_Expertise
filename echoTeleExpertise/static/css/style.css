@@ -540,6 +540,19 @@ div.search-btn button {
   border-color: red;
 }
 
+.link-no-decoration {
+  text-decoration: none;
+  color:white;
+}
+
+.green-check{
+  color: green;
+}
+
+.red-cross {
+  color: red;
+}
+
 /****************** Respensive *****************/
 
 @media screen and (max-width: 1100px) {
@@ -598,7 +611,7 @@ div.search-btn button {
   }
 }
 
-@media screen and (max-height: 620px) {
+@media screen and (max-height: 700px) {
   .sidebar {
     position: fixed;
     width: 70px;
