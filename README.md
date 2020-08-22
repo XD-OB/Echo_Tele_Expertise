@@ -2,7 +2,6 @@
 Echo Télé-Expertise, est un portail Web, destiné aux professionnels de santé demandeurs d'expertise et radiologues interprétateurs.
 
 Il permet l'échange et le partage de données d'imagerie médicale échographique entre sites distants. Sur ce territoire, il organise le transfert d'examens d'imagerie échographique, les comptes rendus, la télé-expertise ainsi que le télédiagnostic entre les professionnels de santé.
-(Meryem Rkach) 
 
 Des imprime ecran de l'app:
 
