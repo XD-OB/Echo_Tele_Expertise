@@ -16,9 +16,9 @@ ScreenShots de l'app:
 Elle est detailler dans le pdf et le XLSX dans le dossier Extras
 
 # Technologies utiliser:
-- Backend: Django3 (Python3+)
-- FrontEnd: HTML, CSS, Bootstrap4, Javascript, JQuery
-- Base de Données: PostgreSQL (Relationnelle)
+- **Backend**: Django3 (Python3+) et du NodeJS (pour modifier l'API di lecteur de radiologie)
+- **FrontEnd**: HTML, CSS, Bootstrap4, Javascript, JQuery
+- **Base de Données**: PostgreSQL (Relationnelle)
 
 # Simple Methode pour lancer l'app:
 ## Pour la premiere fois
@@ -32,39 +32,39 @@ Elle est detailler dans le pdf et le XLSX dans le dossier Extras
 - Dans media creer 2 dossiers: avatars  documents
 - dans avatars coller le fichier dans extras: empty_profile.jpg
 - Dans le terminal ou le CMD dans le dossier de l'app:
-- pip install pipenv
-- pipenv shell
-- pipenv install -r requirements.txt
+- `pip install pipenv`
+- `pipenv shell`
+- `pipenv install -r requirements.txt`
 - Dans pgadmin creer la base de donnée 'etedb'
 - Dans settings.py modifier username & password
-- cd echoTeleExpertise
-- python manage.py makemigrations
-- python manage.py migrate
-- python manage.py createsuperuser
-- python manage.py runserver
+- `cd echoTeleExpertise`
+- `python manage.py makemigrations`
+- `python manage.py migrate`
+- `python manage.py createsuperuser`
+- `python manage.py runserver`
 ==> Dans cette étape le site est lancer dans: 127.0.0.1:8000 (Mentionner dans le msg)
+
 ## Lancer l'app de dwv:
 Dans le Dossier de l'app ouvrir un autre terminal (laisser le dernier terminal running :) ).
 - Download & Install NodeJs
 - Download & Install Yarn
-- cd ete-dwv
-- yarn install
-- yarn start
+- `cd ete-dwv`
+- `yarn install`
+- `yarn start`
 ==> Tous est bien :)
-
 
 
 ## Dans le quotidien (toujours XD)
 ### Lancer l'app principale
 Dans le dossier de l'app telecharger la premiere fois
-- pipenv shell
-- cd echoTeleExpertise
-- python manage.py runserver
+- `pipenv shell`
+- `cd echoTeleExpertise`
+- `python manage.py runserver`
 ==> L'app principale est lancer dans 127.0.0.1:8000 (Mentionner dans le msg)
 ### Lancer l'app de dwv:
 Dans le dossier de l'app telecharger la premiere fois
-- cd ete-dwv
-- yarn start
+- `cd ete-dwv`
+- `yarn start`
 ==> C'est terminer!
 
 
@@ -73,25 +73,25 @@ Dans le dossier de l'app telecharger la premiere fois
 - installer python 3+
 - installer pip
 Pour assurer l'isolation de l'app d'abord on prépare l'environnement virtuel:
-- install pipenv:   pip install pipenv
+- `pip install pipenv`
 Dans le dossier où vous deposerer le dossier de l'app utiliser la commande suivante pour creer pipfile et demarer le shell en virtuel env
-- run: pipenv shell
+- `pipenv shell`
 Dans le nouveau shell (ces dependencies vont etre installer seulement dans le virtuel env):
-- pipenv install django
-- pipenv install psycopg2
-- pipenv install psycopg2-binary
+- `pipenv install django`
+- `pipenv install psycopg2`
+- `pipenv install psycopg2-binary`
 Pour utiliser ImageField dans Django:
-- pipenv install Pillow
+- `pipenv install Pillow`
 Pour generer le pdf:
-- pipenv install xhtml2pdf
+- `pipenv install xhtml2pdf`
 Pour le cryptage:
-- pipenv install pycryptodome
+- `pipenv install pycryptodome`
 
 # DICOM Web Viewer:
 Le visionneur dicom utiliser:
 - https://github.com/ivmartel/dwv-jqui/releases/tag/v0.4.0
-- yarn install
-- yarn start
+- `yarn install`
+- `yarn start`
 
 # Apps:
 ## core:
@@ -111,7 +111,7 @@ contain a template filter used to transform int -> str,
 instead of convert in the views fonction, my choice was to let it in the template.
 
 # Owner
-- Oussama Belouche 1337
+- Oussama Belouche
 
 #
 [![forthebadge](https://forthebadge.com/images/badges/made-with-crayons.svg)](https://forthebadge.com)
@@ -119,5 +119,5 @@ instead of convert in the views fonction, my choice was to let it in the templat
 [![forthebadge](https://forthebadge.com/images/badges/uses-html.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com)
-
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com)
