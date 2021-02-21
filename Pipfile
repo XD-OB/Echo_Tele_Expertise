@@ -9,7 +9,7 @@ verify_ssl = true
 psycopg2 = "==2.8.5"
 psycopg2-binary = "==2.8.5"
 xhtml2pdf = "==0.2.4"
-cryptography = "==2.9.2"
+cryptography = "==3.3.2"
 asgiref = "==3.2.10"
 cffi = "==1.14.0"
 html5lib = "==1.1"
