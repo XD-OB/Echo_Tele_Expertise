@@ -1,4 +1,5 @@
-# Echo_Tele_Expertise
+# Echo Tele Expertise
+
 Echo Télé-Expertise, est un portail Web, destiné aux professionnels de santé demandeurs d'expertise et radiologues interprétateurs.
 
 Il permet l'échange et le partage de données d'imagerie médicale échographique entre sites distants. Sur ce territoire, il organise le transfert d'examens d'imagerie échographique, les comptes rendus, la télé-expertise ainsi que le télédiagnostic entre les professionnels de santé.
@@ -108,3 +109,15 @@ couleur du fond: #e6e4e4
 ## The myconvertions:
 contain a template filter used to transform int -> str,
 instead of convert in the views fonction, my choice was to let it in the template.
+
+# Owner
+- Oussama Belouche 1337
+
+#
+[![forthebadge](https://forthebadge.com/images/badges/made-with-crayons.svg)](https://forthebadge.com)
+
+[![forthebadge](https://forthebadge.com/images/badges/uses-html.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com)
+
